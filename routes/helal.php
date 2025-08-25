@@ -10,7 +10,11 @@
 
 
 
+use App\Http\Controllers\Web\Backend\CMS\AboutPageController;
+use App\Http\Controllers\Web\Backend\CMS\AuthPageController;
+use App\Http\Controllers\Web\Backend\CMS\ContactUsPageController;
 use App\Http\Controllers\Web\Backend\CMS\HomePageController;
+use App\Http\Controllers\Web\Backend\CMS\ResourcesPageController;
 use App\Http\Controllers\Web\Backend\ContactMessageController;
 use App\Http\Controllers\Web\Backend\NotificationController;
 use App\Http\Controllers\Web\Backend\UserController;
@@ -52,12 +56,8 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
   //Route for UserController manage client
   Route::resource('/users', UserController::class)->names('users');
   Route::post('/users/status/{id}', [UserController::class, 'status'])->name('users.status');
-  
 
 
-  //cms all part home page 
-  Route::get('/cms/home-page/hero-section', [HomePageController::class, 'getHeroSection'])->name('cms.home_page.hero_section.create');
-  Route::post('/cms/home-page/hero-section', [HomePageController::class, 'updateHerosection'])->name('cms.home_page.hero_section.update');
 
   // Routes for NotificationController
   Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notification.read');
@@ -73,3 +73,5 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
 
 // Public route for dynamic pages accessible to all users
 Route::get('/pages/{slug}', [DynamicPageController::class, 'showDaynamicPage'])->name('pages');
+
+require __DIR__ . '/cms.php';
