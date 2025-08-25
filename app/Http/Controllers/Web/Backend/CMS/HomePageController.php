@@ -53,137 +53,142 @@ class HomePageController extends Controller
             return redirect()->route('cms.home_page.hero_section.create')->with('error', 'Hero Section not Updated Successfully');
         }
     }
+// ================= HOME PAGE =================
+public function getServicesOverview()
+{
+    $data = CMS::where('page', Page::HomePage->value)
+        ->where('section', Section::ServicesOverview->value)
+        ->first();
 
-    public function getWelcomeSection()
-    {
+    return view('backend.layouts.cms.home_page.services_overview.create', compact('data'));
+}
+
+public function updateServicesOverview(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'nullable|string|max:255',
+        'sub_title' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'sub_description' => 'nullable|string',
+        'button_text' => 'nullable|string|max:255',
+        'link_url' => 'nullable|url',
+    ]);
+
+    try {
         $data = CMS::where('page', Page::HomePage->value)
-            ->where('section', Section::WelcomeSection->value)
+            ->where('section', Section::ServicesOverview->value)
             ->first();
-        return view('backend.layouts.cms.home_page.welcome_section.create', compact('data'));
-    }
-    public function updateWelcomeSection(Request $request)
-    {
 
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'sub_title' => 'required|string|max:255',
-            // 'description' => 'required|string|max:1000',
-            'sub_description' => 'required|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
-        ]);
-
-        try {
-            $data = CMS::where('page', Page::HomePage->value)
-                ->where('section', Section::WelcomeSection->value)
-                ->first();
-            if ($request->hasFile('image')) {
-                if ($data && $data->image && file_exists(public_path($data->image))) {
-                    Helper::fileDelete(public_path($data->image));
-                }
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'trust_section', time() . '_' . getFileName($request->file('image')));
+        if ($request->hasFile('image')) {
+            if ($data && $data->image && file_exists(public_path($data->image))) {
+                Helper::fileDelete(public_path($data->image));
             }
-           
-            // Update or create the CMS entry for the trust section
-            CMS::updateOrCreate(
-                [
-                    'page' => Page::HomePage->value,
-                    'section' => Section::WelcomeSection->value,
-                ],
-                $validatedData
+            $validatedData['image'] = Helper::fileUpload(
+                $request->file('image'),
+                'services_overview',
+                time().'_'.getFileName($request->file('image'))
             );
-            return redirect()->route('cms.home_page.welcome_section.create')->with('success', 'Trust Section Updated Successfully');
-        } catch (Exception $e) {
-            Log::error("HomePageController::updateTrustSection" . $e->getMessage());
-            return redirect()->route('cms.home_page.welcome_section.create')->with('error', 'Trust Section not Updated Successfully');
         }
 
-    }
-    public function getEmployer()
-    {
-        $data = CMS::where('page', Page::HomePage->value)
-            ->where('section', Section::EmployerSection->value)
-            ->first();
-        return view('backend.layouts.cms.home_page.employer_section.create', compact('data'));
-    }
-    public function updateEmployer(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'sub_title' => 'required|string|max:255',
-            // 'description' => 'required|string|max:1000',
-            'sub_description' => 'required|string|max:1000',
-            'button_text' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
-        ]);
+        CMS::updateOrCreate(
+            [
+                'page' => Page::HomePage->value,
+                'section' => Section::ServicesOverview->value,
+            ],
+            $validatedData
+        );
 
-        try {
-            $data = CMS::where('page', Page::HomePage->value)
-                ->where('section', Section::EmployerSection->value)
-                ->first();
-            if ($request->hasFile('image')) {
-                if ($data && $data->image && file_exists(public_path($data->image))) {
-                    Helper::fileDelete(public_path($data->image));
-                }
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'trust_section', time() . '_' . getFileName($request->file('image')));
-            }
-            // Update or create the CMS entry for the trust section
-            CMS::updateOrCreate(
-                [
-                    'page' => Page::HomePage->value,
-                    'section' => Section::EmployerSection->value,
-                ],
-                $validatedData
-            );
-            return redirect()->route('cms.home_page.employer_section.create')->with('success', 'Trust Section Updated Successfully');
-        } catch (Exception $e) {
-            Log::error("HomePageController::updateTrustSection" . $e->getMessage());
-            return redirect()->route('cms.home_page.employer_section.create')->with('error', 'Trust Section not Updated Successfully');
-        }
-
+        return redirect()->route('cms.home_page.services_overview_section.create')
+            ->with('success', 'Services Overview Updated Successfully');
+    } catch (\Exception $e) {
+        Log::error("HomePageController::updateServicesOverview ".$e->getMessage());
+        return redirect()->route('cms.home_page.services_overview_section.create')
+            ->with('error', 'Services Overview Not Updated');
     }
+}
+public function getWorkProcess()
+{
+    $data = CMS::where('page', Page::HomePage->value)
+        ->where('section', Section::WorkProcess->value)
+        ->first();
 
-    public function getJobSeeker()
-    {
-        $data = CMS::where('page', Page::HomePage->value)
-            ->where('section', Section::JobSeekersSection->value)
-            ->first();
-        return view('backend.layouts.cms.home_page.job_seeker_section.create', compact('data'));
-    }
-    public function updateJobSeeker(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'sub_title' => 'required|string|max:255',
-            // 'description' => 'required|string|max:1000',
-            'sub_description' => 'required|string|max:1000',
-            'button_text' => 'required|string|max:50',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
-        ]);
+    return view('backend.layouts.cms.home_page.work_process.create', compact('data'));
+}
 
-        try {
-            $data = CMS::where('page', Page::HomePage->value)
-                ->where('section', Section::JobSeekersSection->value)
-                ->first();
-            if ($request->hasFile('image')) {
-                if ($data && $data->image && file_exists(public_path($data->image))) {
-                    Helper::fileDelete(public_path($data->image));
-                }
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'trust_section', time() . '_' . getFileName($request->file('image')));
-            }
-            // Update or create the CMS entry for the trust section
-            CMS::updateOrCreate(
-                [
-                    'page' => Page::HomePage->value,
-                    'section' => Section::JobSeekersSection->value,
-                ],
-                $validatedData
-            );
-            return redirect()->route('cms.home_page.job_seeker_section.create')->with('success', 'Trust Section Updated Successfully');
-        } catch (Exception $e) {
-            Log::error("HomePageController::updateTrustSection" . $e->getMessage());
-            return redirect()->route('cms.home_page.job_seeker_section.create')->with('error', 'Trust Section not Updated Successfully');
-        }
+public function updateWorkProcess(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+    ]);
 
-    }
+    CMS::updateOrCreate(
+        [
+            'page' => Page::HomePage->value,
+            'section' => Section::WorkProcess->value,
+        ],
+        $validatedData
+    );
+
+    return redirect()->route('cms.home_page.work_process_section.create')
+        ->with('success', 'Work Process Updated Successfully');
+}
+public function getFaq()
+{
+    $data = CMS::where('page', Page::HomePage->value)
+        ->where('section', Section::Faq->value)
+        ->first();
+
+    return view('backend.layouts.cms.home_page.faq.create', compact('data'));
+}
+
+public function updateFaq(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'tags' => 'nullable|json', // for multiple questions/answers
+    ]);
+
+    CMS::updateOrCreate(
+        [
+            'page' => Page::HomePage->value,
+            'section' => Section::Faq->value,
+        ],
+        $validatedData
+    );
+
+    return redirect()->route('cms.home_page.faq_section.create')
+        ->with('success', 'FAQ Updated Successfully');
+}
+public function getTestimonials()
+{
+    $data = CMS::where('page', Page::HomePage->value)
+        ->where('section', Section::Testimonials->value)
+        ->first();
+
+    return view('backend.layouts.cms.home_page.testimonials.create', compact('data'));
+}
+
+public function updateTestimonials(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'tags' => 'nullable|json', // store multiple testimonials
+    ]);
+
+    CMS::updateOrCreate(
+        [
+            'page' => Page::HomePage->value,
+            'section' => Section::Testimonials->value,
+        ],
+        $validatedData
+    );
+
+    return redirect()->route('cms.home_page.testimonial_section.create')
+        ->with('success', 'Testimonials Updated Successfully');
+}
+
  
 }

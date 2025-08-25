@@ -4,32 +4,41 @@ namespace App\Enums;
 
 enum Section: string
 {
-    // Home page section 
-
+    // ===== Home Page Sections =====
     case HeroSection = 'hero_section';
+    case ServicesOverview = 'services_overview';
+    case WorkProcess = 'work_process';
+    case Faq = 'faq';
+    case Testimonials = 'testimonials';
+    case Footer = 'footer';
 
-    case WelcomeSection = 'welcome_section';
-    case EmployerSection = 'employer_section';
-    case HowitWorksSection = 'howitworks_section';
-    case HowitWorksSectionContent = 'howitworks_section_content';
-    case JobSeekersSection = 'jobseekers_section';
-    case OurExpertiseSection = 'our_expertise_section';
-    case OurExpertiseContent = 'our_expertise_content';
-    case WhyChooseUsSection = 'why_choose_us_section';
-    case WhyChooseUsContent = 'why_choose_us_content';
+    // ===== About Page Sections =====
+    case OurStory = 'our_story';
+    case OurVision = 'our_vision';
+    case OurMission = 'our_mission';
+    case HowItWorks = 'how_it_works';
+    case OurServices = 'our_services';
+    case LeadershipTeam = 'leadership_team';
+    case AboutFaqs = 'faqs'; // to differentiate from home page faq
+    case AboutTestimonials = 'testimonials';
 
-    // Employer page section
+    // ===== Resources Page Sections =====
+    case LoanCalculator = 'loan_calculator';
+    case RipeCreditTrackerGuide = 'ripe_credit_tracker_guide';
+    case RepaymentOptions = 'repayment_options';
+    case FeesPolicies = 'fees_policies';
+    case SecurityPrivacy = 'security_privacy';
+    case Faqs = 'faqs';
+    case Blogs = 'blogs';
 
-    case WhyUseSection = 'why_use_section';
-    case OurHiringFlowSection = 'our_hiring_section';
-    case OurHiringFlowContent = 'our_hiring_content';
- 
+    // ===== Contact Us Page Sections =====
+    case Main = 'main';
+    case Form = 'form';
 
-    // Jobseeker page section
-    case WhyJoinSection = 'why_join_section';
-    case JoinWithUsSection = 'join_with_us_section';
-    case GetInTouchSection = 'get_in_touch_section';
-    case ContentSection = 'content_section';
+    // ===== Auth Page Sections =====
+    case Login = 'login';
+    case Register = 'register';
+    case ForgotPassword = 'forgot_password';
 
 
 }

@@ -9,12 +9,6 @@
  */
 
 
-
-use App\Http\Controllers\Web\Backend\CMS\AboutPageController;
-use App\Http\Controllers\Web\Backend\CMS\AuthPageController;
-use App\Http\Controllers\Web\Backend\CMS\ContactUsPageController;
-use App\Http\Controllers\Web\Backend\CMS\HomePageController;
-use App\Http\Controllers\Web\Backend\CMS\ResourcesPageController;
 use App\Http\Controllers\Web\Backend\ContactMessageController;
 use App\Http\Controllers\Web\Backend\NotificationController;
 use App\Http\Controllers\Web\Backend\UserController;
