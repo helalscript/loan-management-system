@@ -4,53 +4,94 @@ use App\Http\Controllers\Web\Backend\CMS\AboutPageController;
 use App\Http\Controllers\Web\Backend\CMS\AuthPageController;
 use App\Http\Controllers\Web\Backend\CMS\ContactUsPageController;
 use App\Http\Controllers\Web\Backend\CMS\HomePageController;
+use App\Http\Controllers\Web\Backend\CMS\HomePageServiceController;
+use App\Http\Controllers\Web\Backend\CMS\HomePageWorkProcessController;
+use App\Http\Controllers\Web\Backend\CMS\HomeTestimonialController;
 use App\Http\Controllers\Web\Backend\CMS\ResourcesPageController;
-
+use Illuminate\Support\Facades\Route;
 
 // ===================== CMS HOME PAGE =====================
 Route::prefix('cms/home-page')->name('cms.home_page.')->group(function () {
+
     Route::get('/hero-section', [HomePageController::class, 'getHeroSection'])->name('hero_section.create');
     Route::post('/hero-section', [HomePageController::class, 'updateHeroSection'])->name('hero_section.update');
 
-    Route::get('/services-overview', [HomePageController::class, 'getServicesOverview'])->name('services_overview_section.create');
-    Route::post('/services-overview', [HomePageController::class, 'updateServicesOverview'])->name('services_overview_section.update');
+    Route::resource('services', HomePageServiceController::class)->names('services_section');
+    Route::post('services/status/{id}', [HomePageServiceController::class, 'status'])->name('services_section.status');
+    Route::post('services/update-container', [HomePageServiceController::class, 'updateContainer'])->name('services_section.update_container');
 
-    Route::get('/work-process', [HomePageController::class, 'getWorkProcess'])->name('work_process_section.create');
-    Route::post('/work-process', [HomePageController::class, 'updateWorkProcess'])->name('work_process_section.update');
+    Route::get('/about-us', [HomePageController::class, 'getAboutUs'])->name('about_us_section.create');
+    Route::post('/about-us', [HomePageController::class, 'updateAboutUs'])->name('about_us_section.update');
 
-    Route::get('/faq', [HomePageController::class, 'getFaq'])->name('faq_section.create');
-    Route::post('/faq', [HomePageController::class, 'updateFaq'])->name('faq_section.update');
+    Route::get('/quick-rate-check', [HomePageController::class, 'getQuickRateCheck'])->name('quick_rate_check_section.create');
+    Route::post('/quick-rate-check', [HomePageController::class, 'updateQuickRateCheck'])->name('quick_rate_check_section.update');
 
-    Route::get('/testimonials', [HomePageController::class, 'getTestimonials'])->name('testimonial_section.create');
-    Route::post('/testimonials', [HomePageController::class, 'updateTestimonials'])->name('testimonial_section.update');
+    Route::resource('/work-process', HomePageWorkProcessController::class)->names('work_process_section');
+    Route::post('/work-process/status/{id}', [HomePageWorkProcessController::class, 'status'])->name('work_process_section.status');
+    Route::post('/work-process/update-container', [HomePageWorkProcessController::class, 'updateContainer'])->name('work_process_section.update_container');
 
-    Route::get('/footer', [HomePageController::class, 'getFooter'])->name('footer_section.create');
-    Route::post('/footer', [HomePageController::class, 'updateFooter'])->name('footer_section.update');
+    // Route::get('/faqs', [HomePageController::class, 'getFaq'])->name('faq_section.create');
+    Route::post('/faqs', [HomePageController::class, 'updateFaq'])->name('faq_section.update');
+
+    Route::resource('/testimonials', HomeTestimonialController::class)->names('testimonial_section');
+    Route::post('/testimonials/status/{id}', [HomeTestimonialController::class, 'status'])->name('testimonial_section.status');
+    Route::post('/testimonials/update-container', [HomeTestimonialController::class, 'updateContainer'])->name('testimonial_section.update_container');
+
+    Route::get('/custom-text', [HomePageController::class, 'getCustomText'])->name('custom_text_section.create');
+    Route::post('/custom-text', [HomePageController::class, 'updateCustomText'])->name('custom_text_section.update');
 });
 
 
 // ===================== CMS ABOUT PAGE =====================
 Route::prefix('cms/about-page')->name('cms.about_page.')->group(function () {
-    Route::resource('/our-story', AboutPageController::class)->names('our_story');
-    Route::resource('/our-vision', AboutPageController::class)->names('our_vision');
-    Route::resource('/our-mission', AboutPageController::class)->names('our_mission');
-    Route::resource('/how-it-works', AboutPageController::class)->names('how_it_works');
-    Route::resource('/our-services', AboutPageController::class)->names('our_services');
-    Route::resource('/leadership-team', AboutPageController::class)->names('leadership_team');
-    Route::resource('/faqs', AboutPageController::class)->names('faqs');
-    Route::resource('/testimonials', AboutPageController::class)->names('testimonials');
+    Route::get('/our-story', [AboutPageController::class, 'getOurStory'])->name('our_story.create');
+    Route::post('/our-story', [AboutPageController::class, 'updateOurStory'])->name('our_story.update');
+
+    Route::get('/our-vision', [AboutPageController::class, 'getOurVision'])->name('our_vision.create');
+    Route::post('/our-vision', [AboutPageController::class, 'updateOurVision'])->name('our_vision.update');
+
+    Route::get('/our-mission', [AboutPageController::class, 'getOurMission'])->name('our_mission.create');
+    Route::post('/our-mission', [AboutPageController::class, 'updateOurMission'])->name('our_mission.update');
+
+    Route::get('/how-it-works', [AboutPageController::class, 'getHowItWorks'])->name('how_it_works.create');
+    Route::post('/how-it-works', [AboutPageController::class, 'updateHowItWorks'])->name('how_it_works.update');
+
+    Route::get('/our-services', [AboutPageController::class, 'getOurServices'])->name('our_services.create');
+    Route::post('/our-services', [AboutPageController::class, 'updateOurServices'])->name('our_services.update');
+
+    Route::get('/leadership-team', [AboutPageController::class, 'getLeadershipTeam'])->name('leadership_team.create');
+    Route::post('/leadership-team', [AboutPageController::class, 'updateLeadershipTeam'])->name('leadership_team.update');
+
+    Route::get('/faqs', [AboutPageController::class, 'getFaqs'])->name('faqs.create');
+    Route::post('/faqs', [AboutPageController::class, 'updateFaqs'])->name('faqs.update');
+
+    Route::get('/testimonials', [AboutPageController::class, 'getTestimonials'])->name('testimonials.create');
+    Route::post('/testimonials', [AboutPageController::class, 'updateTestimonials'])->name('testimonials.update');
 });
 
 
 // ===================== CMS RESOURCES PAGE =====================
 Route::prefix('cms/resources-page')->name('cms.resources_page.')->group(function () {
-    Route::resource('/loan-calculator', ResourcesPageController::class)->names('loan_calculator');
-    Route::resource('/ripe-credit-tracker-guide', ResourcesPageController::class)->names('ripe_credit_tracker_guide');
-    Route::resource('/repayment-options', ResourcesPageController::class)->names('repayment_options');
-    Route::resource('/fees-policies', ResourcesPageController::class)->names('fees_policies');
-    Route::resource('/security-privacy', ResourcesPageController::class)->names('security_privacy');
-    Route::resource('/faqs', ResourcesPageController::class)->names('faqs');
-    Route::resource('/blogs', ResourcesPageController::class)->names('blogs');
+    Route::get('/loan-calculator', [ResourcesPageController::class, 'getLoanCalculator'])->name('loan_calculator.create');
+    Route::post('/loan-calculator', [ResourcesPageController::class, 'updateLoanCalculator'])->name('loan_calculator.update');
+
+    Route::get('/ripe-credit-tracker-guide', [ResourcesPageController::class, 'getRipeCreditTrackerGuide'])->name('ripe_credit_tracker_guide.create');
+    Route::post('/ripe-credit-tracker-guide', [ResourcesPageController::class, 'updateRipeCreditTrackerGuide'])->name('ripe_credit_tracker_guide.update');
+
+    Route::get('/repayment-options', [ResourcesPageController::class, 'getRepaymentOptions'])->name('repayment_options.create');
+    Route::post('/repayment-options', [ResourcesPageController::class, 'updateRepaymentOptions'])->name('repayment_options.update');
+
+    Route::get('/fees-policies', [ResourcesPageController::class, 'getFeesPolicies'])->name('fees_policies.create');
+    Route::post('/fees-policies', [ResourcesPageController::class, 'updateFeesPolicies'])->name('fees_policies.update');
+
+    Route::get('/security-privacy', [ResourcesPageController::class, 'getSecurityPrivacy'])->name('security_privacy.create');
+    Route::post('/security-privacy', [ResourcesPageController::class, 'updateSecurityPrivacy'])->name('security_privacy.update');
+
+    Route::get('/faqs', [ResourcesPageController::class, 'getFaqs'])->name('faqs.create');
+    Route::post('/faqs', [ResourcesPageController::class, 'updateFaqs'])->name('faqs.update');
+
+    Route::get('/blogs', [ResourcesPageController::class, 'getBlogs'])->name('blogs.create');
+    Route::post('/blogs', [ResourcesPageController::class, 'updateBlogs'])->name('blogs.update');
 });
 
 
@@ -59,13 +100,19 @@ Route::prefix('cms/contact-us-page')->name('cms.contact_us_page.')->group(functi
     Route::get('/', [ContactUsPageController::class, 'index'])->name('index');
     Route::post('/', [ContactUsPageController::class, 'update'])->name('update');
 
-    Route::resource('/form', ContactUsPageController::class)->names('form');
+    Route::get('/form', [ContactUsPageController::class, 'getForm'])->name('form.create');
+    Route::post('/form', [ContactUsPageController::class, 'updateForm'])->name('form.update');
 });
 
 
 // ===================== CMS AUTH PAGE =====================
 Route::prefix('cms/auth-page')->name('cms.auth_page.')->group(function () {
-    Route::resource('/login', AuthPageController::class)->names('login');
-    Route::resource('/register', AuthPageController::class)->names('register');
-    Route::resource('/forgot-password', AuthPageController::class)->names('forgot_password');
+    Route::get('/login', [AuthPageController::class, 'getLogin'])->name('login.create');
+    Route::post('/login', [AuthPageController::class, 'updateLogin'])->name('login.update');
+
+    Route::get('/register', [AuthPageController::class, 'getRegister'])->name('register.create');
+    Route::post('/register', [AuthPageController::class, 'updateRegister'])->name('register.update');
+
+    Route::get('/forgot-password', [AuthPageController::class, 'getForgotPassword'])->name('forgot_password.create');
+    Route::post('/forgot-password', [AuthPageController::class, 'updateForgotPassword'])->name('forgot_password.update');
 });

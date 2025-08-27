@@ -9,6 +9,7 @@
  */
 
 
+use App\Http\Controllers\Web\Backend\CMS\FaqController;
 use App\Http\Controllers\Web\Backend\ContactMessageController;
 use App\Http\Controllers\Web\Backend\NotificationController;
 use App\Http\Controllers\Web\Backend\UserController;
@@ -52,6 +53,10 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
   Route::post('/users/status/{id}', [UserController::class, 'status'])->name('users.status');
 
 
+
+  //Route for FaqController
+  Route::resource('/faqs', FaqController::class)->names('faqs');
+  Route::post('/faqs/status/{id}', [FaqController::class, 'status'])->name('faqs.status');
 
   // Routes for NotificationController
   Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notification.read');

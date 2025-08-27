@@ -141,101 +141,119 @@ $systemSetting = App\Models\SystemSetting::first();
             </li>
 
             <!-- CMS Home Page Menu Item -->
-            <li class="menu-item {{ request()->routeIs('cms.home_page.*') ? 'open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('cms.home_page.*', 'faqs.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
-                    <span class="material-symbols-outlined menu-icon">handshake</span>
+                    <span class="material-symbols-outlined menu-icon">home</span>
                     <span class="title">Home Page</span>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
                         <a href="{{ route('cms.home_page.hero_section.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.home_page.hero_section.*') ? 'active' : '' }}">
+                            class="menu-link {{ request()->routeIs('cms.home_page.hero_section.create') ? 'active' : '' }}">
                             Hero Section
                         </a>
                     </li>
+
                     <li class="menu-item">
-                        <a href="{{ route('cms.home_page.services_overview_section.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.home_page.services_overview_section.*') ? 'active' : '' }}">
-                            Services Overview
+                        <a href="{{ route('cms.home_page.services_section.index') }}"
+                            class="menu-link {{ request()->routeIs('cms.home_page.services_section.*') ? 'active' : '' }}">
+                            Services
                         </a>
                     </li>
+
                     <li class="menu-item">
-                        <a href="{{ route('cms.home_page.work_process_section.create') }}"
+                        <a href="{{ route('cms.home_page.about_us_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.home_page.about_us_section.*') ? 'active' : '' }}">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('cms.home_page.quick_rate_check_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.home_page.quick_rate_check_section.*') ? 'active' : '' }}">
+                            Quick Rate Check
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('cms.home_page.work_process_section.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.work_process_section.*') ? 'active' : '' }}">
                             Work Process
                         </a>
                     </li>
+
                     <li class="menu-item">
-                        <a href="{{ route('cms.home_page.faq_section.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.home_page.faq_section.*') ? 'active' : '' }}">
+                        <a href="{{ route('faqs.index') }}"
+                            class="menu-link {{ request()->routeIs('faqs.*') ? 'active' : '' }}">
                             FAQ's
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.home_page.testimonial_section.create') }}"
+                        <a href="{{ route('cms.home_page.testimonial_section.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
                             Testimonials
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.home_page.footer_section.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.home_page.footer_section.*') ? 'active' : '' }}">
-                            Footer
+                        <a href="{{ route('cms.home_page.custom_text_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.home_page.custom_text_section.*') ? 'active' : '' }}">
+                            Custom Text
                         </a>
                     </li>
+
                 </ul>
             </li>
             <!-- CMS About Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.about_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
-                    <span class="material-symbols-outlined menu-icon">info</span>
+                    <span class="material-symbols-outlined menu-icon">auto_awesome</span>
                     <span class="title">About</span>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.our_story.index') }}"
+                        <a href="{{ route('cms.about_page.our_story.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.our_story.*') ? 'active' : '' }}">
                             Our Story
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.our_vision.index') }}"
+                        <a href="{{ route('cms.about_page.our_vision.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.our_vision.*') ? 'active' : '' }}">
                             Our Vision
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.our_mission.index') }}"
+                        <a href="{{ route('cms.about_page.our_mission.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.our_mission.*') ? 'active' : '' }}">
                             Our Mission
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.how_it_works.index') }}"
+                        <a href="{{ route('cms.about_page.how_it_works.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.how_it_works.*') ? 'active' : '' }}">
                             How It Works
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.our_services.index') }}"
+                        <a href="{{ route('cms.about_page.our_services.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.our_services.*') ? 'active' : '' }}">
                             Our Services
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.leadership_team.index') }}"
+                        <a href="{{ route('cms.about_page.leadership_team.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.leadership_team.*') ? 'active' : '' }}">
                             Leadership Team
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.faqs.index') }}"
+                        <a href="{{ route('cms.about_page.faqs.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.faqs.*') ? 'active' : '' }}">
                             FAQ's
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.testimonials.index') }}"
+                        <a href="{{ route('cms.about_page.testimonials.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.testimonials.*') ? 'active' : '' }}">
                             Testimonials
                         </a>
@@ -245,48 +263,48 @@ $systemSetting = App\Models\SystemSetting::first();
             <!-- CMS Resources Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.resources_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
-                    <span class="material-symbols-outlined menu-icon">info</span>
+                    <span class="material-symbols-outlined menu-icon">local_library</span>
                     <span class="title">Resources</span>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.loan_calculator.index') }}"
+                        <a href="{{ route('cms.resources_page.loan_calculator.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.loan_calculator.*') ? 'active' : '' }}">
                             Loan Calculator
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.ripe_credit_tracker_guide.index') }}"
+                        <a href="{{ route('cms.resources_page.ripe_credit_tracker_guide.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.ripe_credit_tracker_guide.*') ? 'active' : '' }}">
                             RipeCredit Tracker Guide
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.repayment_options.index') }}"
+                        <a href="{{ route('cms.resources_page.repayment_options.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.repayment_options.*') ? 'active' : '' }}">
                             Repayment Options
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.fees_policies.index') }}"
+                        <a href="{{ route('cms.resources_page.fees_policies.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.fees_policies.*') ? 'active' : '' }}">
                             Fees & Policies
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.security_privacy.index') }}"
+                        <a href="{{ route('cms.resources_page.security_privacy.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.security_privacy.*') ? 'active' : '' }}">
                             Security & Privacy
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.faqs.index') }}"
+                        <a href="{{ route('cms.resources_page.faqs.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.faqs.*') ? 'active' : '' }}">
                             FAQ's
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.blogs.index') }}"
+                        <a href="{{ route('cms.resources_page.blogs.create') }}"
                             class="menu-link {{ request()->routeIs('cms.resources_page.blogs.*') ? 'active' : '' }}">
                             Blogs
                         </a>
@@ -296,7 +314,7 @@ $systemSetting = App\Models\SystemSetting::first();
             <!-- CMS Contact Us Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.contact_us_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
-                    <span class="material-symbols-outlined menu-icon">info</span>
+                    <span class="material-symbols-outlined menu-icon">contacts</span>
                     <span class="title">Contact Us</span>
                 </a>
                 <ul class="menu-sub">
@@ -307,7 +325,7 @@ $systemSetting = App\Models\SystemSetting::first();
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.contact_us_page.form.index') }}"
+                        <a href="{{ route('cms.contact_us_page.form.create') }}"
                             class="menu-link {{ request()->routeIs('cms.contact_us_page.form.*') ? 'active' : '' }}">
                             Contact Form
                         </a>
@@ -317,24 +335,24 @@ $systemSetting = App\Models\SystemSetting::first();
             <!-- CMS Auth Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.auth_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
-                    <span class="material-symbols-outlined menu-icon">info</span>
+                    <span class="material-symbols-outlined menu-icon">fingerprint</span>
                     <span class="title">Auth</span>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('cms.auth_page.login.index') }}"
+                        <a href="{{ route('cms.auth_page.login.create') }}"
                             class="menu-link {{ request()->routeIs('cms.auth_page.login.*') ? 'active' : '' }}">
                             Login
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.auth_page.register.index') }}"
+                        <a href="{{ route('cms.auth_page.register.create') }}"
                             class="menu-link {{ request()->routeIs('cms.auth_page.register.*') ? 'active' : '' }}">
                             Register
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.auth_page.forgot_password.index') }}"
+                        <a href="{{ route('cms.auth_page.forgot_password.create') }}"
                             class="menu-link {{ request()->routeIs('cms.auth_page.forgot_password.*') ? 'active' : '' }}">
                             Forgot Password
                         </a>

@@ -9,6 +9,7 @@ use App\Enums\Section;
 use App\Helpers\Helper;
 use App\Models\CMS;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AboutPageController extends Controller
 {

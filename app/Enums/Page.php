@@ -8,7 +8,7 @@ enum Page: string
     case HomePage = 'home_page';
     case AboutPage = 'about_page';
     case ResourcesPage = 'resources_page';
-    case ContactUsPage = 'contact_us_page';
+    // case ContactUsPage = 'contact_us_page';
     case AuthPage = 'auth_page';
 
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('sub_title')->nullable();
             $table->string('image')->nullable();
             $table->string('background_image')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->longText('sub_description')->nullable();
             $table->string('button_text')->nullable();
             $table->string('link_url')->nullable();
