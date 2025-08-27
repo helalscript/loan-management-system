@@ -20,9 +20,9 @@ class AboutPageLeadershipController extends Controller
      */
     public function index(Request $request)
     {
-        $HowItWorkSection = CMS::where('page', Page::HomePage)->where('section', Section::HowitWorksSection)->first();
+        $containerData = CMS::where('page', Page::AboutPage)->where('section', Section::LeadershipTeamSection)->first();
         if ($request->ajax()) {
-            $data = CMS::where('page', Page::HomePage)->where('section', Section::HowitWorksSectionContent)->latest();
+            $data = CMS::where('page', Page::AboutPage)->where('section', Section::LeadershipTeamSectionContent)->latest();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('image', function ($data) {
@@ -43,7 +43,7 @@ class AboutPageLeadershipController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return '<div class="action-wrapper">
-                        <a type="button" href="' . route('cms.home_page.how_it_work.edit', $data->id) . '"
+                        <a type="button" href="' . route('cms.about_page.leadership_teams_section.edit', $data->id) . '"
                                 class="ps-0 border-0 bg-transparent lh-1 position-relative top-2"
                                  ><i class="material-symbols-outlined fs-16 text-body">edit</i>
                             </a>
@@ -56,7 +56,7 @@ class AboutPageLeadershipController extends Controller
                 ->rawColumns(['status', 'action', 'image'])
                 ->make(true);
         }
-        return view("backend.layouts.cms.about_page.how_it_work_section.index", compact('HowItWorkSection'));
+        return view("backend.layouts.cms.about_page.leadership_teams_section.index", compact('containerData'));
     }
 
     /**
@@ -64,7 +64,7 @@ class AboutPageLeadershipController extends Controller
      */
     public function create()
     {
-        return view("backend.layouts.cms.home_page.how_it_work_section.create");
+        return view("backend.layouts.cms.about_page.leadership_teams_section.create");
     }
 
     /**
@@ -80,15 +80,15 @@ class AboutPageLeadershipController extends Controller
 
         try {
             if ($request->hasFile('image')) {
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'how_it_work', time() . '_' . getFileName($request->file('image')));
+                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'leadership_teams_section', time() . '_' . getFileName($request->file('image')));
             }
-            $validatedData['page'] = Page::HomePage->value;
-            $validatedData['section'] = Section::HowitWorksSectionContent->value;
+            $validatedData['page'] = Page::AboutPage->value;
+            $validatedData['section'] = Section::LeadershipTeamSectionContent->value;
             CMS::Create($validatedData);
-            return redirect()->route('cms.home_page.how_it_work.index')->with('success', 'Item created Successfully');
+            return redirect()->route('cms.about_page.leadership_teams_section.index')->with('success', 'Item created Successfully');
         } catch (Exception $e) {
-            Log::error("HomePageHowItWorkController::store" . $e->getMessage());
-            return redirect()->route('cms.home_page.how_it_work.index')->with('error', 'Item created Failed')->withInput();
+            Log::error("AboutPageHowItWorkController::store" . $e->getMessage());
+            return redirect()->route('cms.about_page.leadership_teams_section.index')->with('error', 'Item created Failed')->withInput();
         }
     }
 
@@ -99,11 +99,11 @@ class AboutPageLeadershipController extends Controller
     public function edit(string $id)
     {
         $data = CMS::where([
-            'page' => Page::HomePage->value,
-            'section' => Section::HowitWorksSectionContent->value
+            'page' => Page::AboutPage->value,
+            'section' => Section::LeadershipTeamSectionContent->value
         ])->findOrFail($id);
 
-        return view("backend.layouts.cms.home_page.how_it_work_section.edit", compact('data'));
+        return view("backend.layouts.cms.about_page.leadership_teams_section.edit", compact('data'));
     }
 
     /**
@@ -124,16 +124,16 @@ class AboutPageLeadershipController extends Controller
                 if (!empty($data->image)) {
                     Helper::fileDelete(public_path($data->image));
                 }
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'how_it_work', time() . '_' . getFileName($request->file('image')));
+                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'leadership_teams_section', time() . '_' . getFileName($request->file('image')));
             }
 
             $data->update($validatedData);
             flash()->success('Item updated Successfully');
-            return redirect()->route('cms.home_page.how_it_work.index');
+            return redirect()->route('cms.about_page.leadership_teams_section.index');
         } catch (Exception $e) {
-            Log::error("HomePageHowItWorkController::store" . $e->getMessage());
+            Log::error("AboutPageHowItWorkController::store" . $e->getMessage());
             flash()->error('Item updated Failed');
-            return redirect()->route('cms.home_page.how_it_work.index');
+            return redirect()->route('cms.about_page.leadership_teams_section.index');
         }
     }
 
@@ -182,26 +182,26 @@ class AboutPageLeadershipController extends Controller
     }
 
     // update main Faq container
-    public function updateHowItWorkContainer(Request $request)
+    public function updateContainer(Request $request)
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            // 'description' => 'required|string|max:255',
+            'sub_title' => 'required|string|max:255',
         ]);
 
         try {
             $data = CMS::updateOrCreate(
                 [
-                    'page' => Page::HomePage->value,
-                    'section' => Section::HowitWorksSection->value,
+                    'page' => Page::AboutPage->value,
+                    'section' => Section::LeadershipTeamSection->value,
                 ],
                 $validatedData
             );
 
-            return redirect()->route('cms.home_page.how_it_work.index')->with('success', 'Container update successfully');
+            return redirect()->route('cms.about_page.leadership_teams_section.index')->with('success', 'Container update successfully');
         } catch (Exception $e) {
-            Log::error("HomePageHowItWorkController::updateHowItWorkContainer" . $e->getMessage());
-            return redirect()->route('cms.home_page.how_it_work.index')->with('error', 'Container update unsuccessfully');
+            Log::error("AboutPageHowItWorkController::updateHowItWorkContainer" . $e->getMessage());
+            return redirect()->route('cms.about_page.leadership_teams_section.index')->with('error', 'Container update unsuccessfully');
         }
     }
 }

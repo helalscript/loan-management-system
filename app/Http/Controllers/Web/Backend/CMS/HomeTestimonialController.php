@@ -116,7 +116,9 @@ class HomeTestimonialController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
+            'sub_title' => 'required|string|max:255',
             'description' => 'required|string',
+            'sub_description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

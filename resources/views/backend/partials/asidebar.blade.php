@@ -209,13 +209,15 @@ $systemSetting = App\Models\SystemSetting::first();
                     <span class="material-symbols-outlined menu-icon">auto_awesome</span>
                     <span class="title">About</span>
                 </a>
+
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.our_story.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.about_page.our_story.*') ? 'active' : '' }}">
-                            Our Story
+                        <a href="{{ route('cms.about_page.hero_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.about_page.hero_section.create') ? 'active' : '' }}">
+                            Hero Section
                         </a>
                     </li>
+
                     <li class="menu-item">
                         <a href="{{ route('cms.about_page.our_vision.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.our_vision.*') ? 'active' : '' }}">
@@ -229,8 +231,8 @@ $systemSetting = App\Models\SystemSetting::first();
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.how_it_works.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.about_page.how_it_works.*') ? 'active' : '' }}">
+                        <a href="{{ route('cms.about_page.how_it_works_section.index') }}"
+                            class="menu-link {{ request()->routeIs('cms.about_page.how_it_works_section.*') ? 'active' : '' }}">
                             How It Works
                         </a>
                     </li>
@@ -241,21 +243,27 @@ $systemSetting = App\Models\SystemSetting::first();
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.about_page.leadership_team.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.about_page.leadership_team.*') ? 'active' : '' }}">
+                        <a href="{{ route('cms.about_page.leadership_teams_section.index') }}"
+                            class="menu-link {{ request()->routeIs('cms.about_page.leadership_teams_section.*') ? 'active' : '' }}">
                             Leadership Team
                         </a>
                     </li>
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('cms.about_page.faqs.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.faqs.*') ? 'active' : '' }}">
                             FAQ's
                         </a>
-                    </li>
-                    <li class="menu-item">
+                    </li> --}}
+                    {{-- <li class="menu-item">
                         <a href="{{ route('cms.about_page.testimonials.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.testimonials.*') ? 'active' : '' }}">
                             Testimonials
+                        </a>
+                    </li> --}}
+                    <li class="menu-item">
+                        <a href="{{ route('cms.about_page.custom_text_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.about_page.custom_text_section.*') ? 'active' : '' }}">
+                            Custom Text
                         </a>
                     </li>
                 </ul>

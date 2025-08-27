@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Web\Backend\CMS\AboutPageController;
+use App\Http\Controllers\Web\Backend\CMS\AboutPageHowItWorkController;
+use App\Http\Controllers\Web\Backend\CMS\AboutPageLeadershipController;
 use App\Http\Controllers\Web\Backend\CMS\AuthPageController;
 use App\Http\Controllers\Web\Backend\CMS\ContactUsPageController;
 use App\Http\Controllers\Web\Backend\CMS\HomePageController;
@@ -44,8 +46,9 @@ Route::prefix('cms/home-page')->name('cms.home_page.')->group(function () {
 
 // ===================== CMS ABOUT PAGE =====================
 Route::prefix('cms/about-page')->name('cms.about_page.')->group(function () {
-    Route::get('/our-story', [AboutPageController::class, 'getOurStory'])->name('our_story.create');
-    Route::post('/our-story', [AboutPageController::class, 'updateOurStory'])->name('our_story.update');
+    Route::get('/hero-section', [AboutPageController::class, 'getHeroSection'])->name('hero_section.create');
+    Route::post('/hero-section', [AboutPageController::class, 'updateHeroSection'])->name('hero_section.update');
+
 
     Route::get('/our-vision', [AboutPageController::class, 'getOurVision'])->name('our_vision.create');
     Route::post('/our-vision', [AboutPageController::class, 'updateOurVision'])->name('our_vision.update');
@@ -53,20 +56,23 @@ Route::prefix('cms/about-page')->name('cms.about_page.')->group(function () {
     Route::get('/our-mission', [AboutPageController::class, 'getOurMission'])->name('our_mission.create');
     Route::post('/our-mission', [AboutPageController::class, 'updateOurMission'])->name('our_mission.update');
 
-    Route::get('/how-it-works', [AboutPageController::class, 'getHowItWorks'])->name('how_it_works.create');
-    Route::post('/how-it-works', [AboutPageController::class, 'updateHowItWorks'])->name('how_it_works.update');
+    Route::resource('/how-it-works', AboutPageHowItWorkController::class)->names('how_it_works_section');
+    Route::post('/how-it-works/status/{id}', [AboutPageHowItWorkController::class, 'status'])->name('how_it_works_section.status');
+    Route::post('/how-it-works/update-container', [AboutPageHowItWorkController::class, 'updateContainer'])->name('how_it_works_section.update_container');
 
     Route::get('/our-services', [AboutPageController::class, 'getOurServices'])->name('our_services.create');
     Route::post('/our-services', [AboutPageController::class, 'updateOurServices'])->name('our_services.update');
 
-    Route::get('/leadership-team', [AboutPageController::class, 'getLeadershipTeam'])->name('leadership_team.create');
-    Route::post('/leadership-team', [AboutPageController::class, 'updateLeadershipTeam'])->name('leadership_team.update');
+    Route::resource('/leadership-teams', AboutPageLeadershipController::class)->names('leadership_teams_section');
+    Route::post('/leadership-teams/status/{id}', [AboutPageLeadershipController::class, 'status'])->name('leadership_teams_section.status');
+    Route::post('/leadership-teams/update-container', [AboutPageLeadershipController::class, 'updateContainer'])->name('leadership_teams_section.update_container');
+    // Route::get('/faqs', [AboutPageController::class, 'getFaqs'])->name('faqs.create');
+    // Route::post('/faqs', [AboutPageController::class, 'updateFaqs'])->name('faqs.update');
 
-    Route::get('/faqs', [AboutPageController::class, 'getFaqs'])->name('faqs.create');
-    Route::post('/faqs', [AboutPageController::class, 'updateFaqs'])->name('faqs.update');
-
-    Route::get('/testimonials', [AboutPageController::class, 'getTestimonials'])->name('testimonials.create');
-    Route::post('/testimonials', [AboutPageController::class, 'updateTestimonials'])->name('testimonials.update');
+    // Route::get('/testimonials', [AboutPageController::class, 'getTestimonials'])->name('testimonials.create');
+    // Route::post('/testimonials', [AboutPageController::class, 'updateTestimonials'])->name('testimonials.update');
+    Route::get('/custom-text', [AboutPageController::class, 'getCustomText'])->name('custom_text_section.create');
+    Route::post('/custom-text', [AboutPageController::class, 'updateCustomText'])->name('custom_text_section.update');
 });
 
 

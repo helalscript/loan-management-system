@@ -13,7 +13,7 @@
 @section('content')
     <div class="main-content-container overflow-hidden">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-            <h3 class="mb-0">CMS How it work List</h3>
+            <h3 class="mb-0">CMS Item List</h3>
 
 
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -25,10 +25,10 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span class="fw-medium">Home Page </span>
+                        <span class="fw-medium">About Page </span>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span class="fw-medium">How It Work List</span>
+                        <span class="fw-medium"> Item List</span>
                     </li>
                 </ol>
             </nav>
@@ -41,11 +41,11 @@
                     <div class="card-body p-4">
 
                         <div class="mb-4">
-                            <h4 class="fs-20 mb-1">CMS How It Work Container</h4>
-                            <p class="fs-15">Update How It Work Container and site details here.</p>
+                            <h4 class="fs-20 mb-1">CMS Our Leadership Container</h4>
+                            <p class="fs-15">Update Our Leadership Container and site details here.</p>
                         </div>
 
-                        <form action="{{ route('cms.home_page.how_it_work.update_container') }}" method="POST"
+                        <form action="{{ route('cms.about_page.leadership_teams_section.update_container') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row">
@@ -57,29 +57,31 @@
                                         <div class="form-group position-relative">
                                             <input type="text"
                                                 class="form-control text-dark ps-5 h-55 @error('title') is-invalid @enderror"
-                                                name="title" value="{{ old('title', $HowItWorkSection->title ?? '') }}"
-                                                required placeholder="Enter Title here">
+                                                name="title" value="{{ old('title', $containerData->title ?? '') }}"
+                                                required placeholder="Enter Section Title here">
                                         </div>
                                         @error('title')
                                             <div id="title-error" class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-
-                                {{-- <!-- Subtitle Field -->
+                                <!-- Sub Title Field -->
                                 <div class="col-lg-12">
                                     <div class="form-group mb-4">
-                                        <label class="label text-secondary">Section Description<span
-                                                class="text-danger">*</span></label>
+                                        <label class="label text-secondary">Title<span class="text-danger">*</span></label>
                                         <div class="form-group position-relative">
-                                            <textarea class="form-control text-dark ps-5 h-55 " name="description" required=""
-                                                placeholder="Enter description here">{{ old('description', $HowItWorkSection->description ?? '') }}</textarea>
+                                            <input type="text"
+                                                class="form-control text-dark ps-5 h-55 @error('sub_title') is-invalid @enderror"
+                                                name="sub_title"
+                                                value="{{ old('sub_title', $containerData->sub_title ?? '') }}" required
+                                                placeholder="Enter Title here">
                                         </div>
-                                        @error('description')
-                                            <div id="description-error" class="text-danger">{{ $message }}</div>
+                                        @error('sub_title')
+                                            <div id="sub_title-error" class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div> --}}
+                                </div>
+
                             </div>
 
                             <div class="row">
@@ -106,7 +108,7 @@
                                 <i
                                     class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y">search</i>
                             </span>
-                            <a href="{{ route('cms.home_page.how_it_work.create') }}"
+                            <a href="{{ route('cms.about_page.leadership_teams_section.create') }}"
                                 class="btn btn-outline-primary py-1 px-2 px-sm-4 fs-14 fw-medium rounded-3 hover-bg">
                                 <span class="py-sm-1 d-block">
                                     <i class="ri-add-line d-none d-sm-inline-block"></i>
@@ -121,7 +123,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Icon</th>
+                                            <th scope="col">Item Image</th>
                                             <th scope="col">Title</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Status</th>
@@ -140,7 +142,8 @@
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination mb-0 justify-content-center">
                                         <li class="page-item">
-                                            <a class="page-link icon" aria-label="Previous" href="#" id="prevPage">
+                                            <a class="page-link icon" aria-label="Previous" href="#"
+                                                id="prevPage">
                                                 <i class="material-symbols-outlined">keyboard_arrow_left</i>
                                             </a>
                                         </li>
@@ -206,7 +209,7 @@
                 dom: "<'row justify-content-between table-topbar'<'col-md-6 col-sm-4 px-0'l>>tir",
 
                 ajax: {
-                    url: "{{ route('cms.home_page.how_it_work.index') }}",
+                    url: "{{ route('cms.about_page.leadership_teams_section.index') }}",
                     type: "get",
                     // success: function(data) {
                     //     console.log(data);
@@ -366,14 +369,14 @@
         // Use the status change alert
         function changeStatus(event, id) {
             event.preventDefault();
-            let statusUrl = '{{ route('cms.home_page.how_it_work.status', ':id') }}';
+            let statusUrl = '{{ route('cms.about_page.leadership_teams_section.status', ':id') }}';
             showStatusChangeAlert(id, statusUrl);
         }
 
         // Use the delete confirm alert
         function deleteRecord(event, id) {
             event.preventDefault();
-            let deleteUrl = '{{ route('cms.home_page.how_it_work.destroy', ':id') }}';
+            let deleteUrl = '{{ route('cms.about_page.leadership_teams_section.destroy', ':id') }}';
             showDeleteConfirm(id, deleteUrl);
         }
     </script>

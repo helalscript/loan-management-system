@@ -13,32 +13,37 @@ use Illuminate\Support\Facades\Log;
 
 class AboutPageController extends Controller
 {
-    // ============== OUR STORY SECTION ==============
-    public function getOurStory()
+    // ============== HERO SECTION ==============
+    public function getHeroSection()
     {
         $data = CMS::where('page', Page::AboutPage->value)
-            ->where('section', Section::OurStory->value)
+            ->where('section', Section::HeroSection->value)
             ->first();
 
-        return view('backend.layouts.cms.about_page.our_story.create', compact('data'));
+        return view('backend.layouts.cms.about_page.hero_section.create', compact('data'));
     }
 
-    public function updateOurStory(Request $request)
+    public function updateHeroSection(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'sub_title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'sub_description' => 'nullable|string',
-            'button_text' => 'nullable|string|max:255',
-            'link_url' => 'nullable|url',
-        ]);
-
+        // $validatedData = $request->validate([
+        //     'title' => 'nullable|string|max:255',
+        //     'description' => 'nullable|string',
+        //     'button_text' => 'nullable|string|max:255',
+        //     'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+        // ]);
+        $validatedData = $this->validateRequest($request);
         try {
+            $data = CMS::where('page', Page::AboutPage->value)
+                ->where('section', Section::HeroSection->value)
+                ->first();
+
             if ($request->hasFile('image')) {
+                if ($data && $data->image && file_exists(public_path($data->image))) {
+                    Helper::fileDelete(public_path($data->image));
+                }
                 $validatedData['image'] = Helper::fileUpload(
                     $request->file('image'),
-                    'about/our_story',
+                    'hero_section',
                     time() . '_' . getFileName($request->file('image'))
                 );
             }
@@ -46,15 +51,17 @@ class AboutPageController extends Controller
             CMS::updateOrCreate(
                 [
                     'page' => Page::AboutPage->value,
-                    'section' => Section::OurStory->value,
+                    'section' => Section::HeroSection->value,
                 ],
                 $validatedData
             );
 
-            return redirect()->route('cms.about_page.our_story.create')->with('success', 'Our Story Updated Successfully');
-        } catch (Exception $e) {
-            Log::error("AboutPageController::updateOurStory " . $e->getMessage());
-            return redirect()->route('cms.about_page.our_story.create')->with('error', 'Our Story not Updated');
+            return redirect()->route('cms.about_page.hero_section.create')
+                ->with('success', 'Services Overview Updated Successfully');
+        } catch (\Exception $e) {
+            Log::error("AboutPageController::updateHeroSection " . $e->getMessage());
+            return redirect()->route('cms.about_page.hero_section.create')
+                ->with('error', 'Services Overview Not Updated');
         }
     }
 
@@ -116,37 +123,6 @@ class AboutPageController extends Controller
         return redirect()->route('cms.about_page.our_mission.create')->with('success', 'Our Mission Updated Successfully');
     }
 
-
-    // ============== HOW IT WORKS SECTION ==============
-    public function getHowItWorks()
-    {
-        $data = CMS::where('page', Page::AboutPage->value)
-            ->where('section', Section::HowItWorks->value)
-            ->first();
-
-        return view('backend.layouts.cms.about_page.how_it_works.create', compact('data'));
-    }
-
-    public function updateHowItWorks(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'tags' => 'nullable|json', // for multiple steps
-        ]);
-
-        CMS::updateOrCreate(
-            [
-                'page' => Page::AboutPage->value,
-                'section' => Section::HowItWorks->value,
-            ],
-            $validatedData
-        );
-
-        return redirect()->route('cms.about_page.how_it_works.create')->with('success', 'How It Works Updated Successfully');
-    }
-
-
     // ============== OUR SERVICES SECTION ==============
     public function getOurServices()
     {
@@ -162,9 +138,22 @@ class AboutPageController extends Controller
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'tags' => 'nullable|json', // for multiple services
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
         ]);
+        $data = CMS::where('page', Page::AboutPage->value)
+            ->where('section', Section::OurServices->value)
+            ->first();
 
+        if ($request->hasFile('image')) {
+            if ($data && $data->image && file_exists(public_path($data->image))) {
+                Helper::fileDelete(public_path($data->image));
+            }
+            $validatedData['image'] = Helper::fileUpload(
+                $request->file('image'),
+                'hero_section',
+                time() . '_' . getFileName($request->file('image'))
+            );
+        }
         CMS::updateOrCreate(
             [
                 'page' => Page::AboutPage->value,
@@ -175,91 +164,126 @@ class AboutPageController extends Controller
 
         return redirect()->route('cms.about_page.our_services.create')->with('success', 'Our Services Updated Successfully');
     }
-
-
-    // ============== LEADERSHIP TEAM SECTION ==============
-    public function getLeadershipTeam()
+    public function getCustomText()
     {
         $data = CMS::where('page', Page::AboutPage->value)
-            ->where('section', Section::LeadershipTeam->value)
+            ->where('section', Section::CustomText->value)
             ->first();
-
-        return view('backend.layouts.cms.about_page.leadership_team.create', compact('data'));
+        return view('backend.layouts.cms.about_page.custom_text.create', compact('data'));
     }
 
-    public function updateLeadershipTeam(Request $request)
+    public function updateCustomText(Request $request)
     {
-        $validatedData = $request->validate([
+        // $validatedData = $request->validate([
+        //     'title' => 'nullable|string|max:255',
+        //     'sub_title' => 'nullable|string|max:255',
+        //     'description' => 'nullable|string',
+        //     'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+        // ]);
+
+        $validatedData = $this->validateRequest($request);
+        try {
+            $data = CMS::where('page', Page::AboutPage->value)
+                ->where('section', Section::CustomText->value)
+                ->first();
+            if ($request->hasFile('image')) {
+                if ($data && $data->image && file_exists(public_path($data->image))) {
+                    Helper::fileDelete(public_path($data->image));
+                }
+                $validatedData['image'] = Helper::fileUpload(
+                    $request->file('image'),
+                    'services_overview',
+                    time() . '_' . getFileName($request->file('image'))
+                );
+            }
+            CMS::updateOrCreate(
+                [
+                    'page' => Page::AboutPage->value,
+                    'section' => Section::CustomText->value,
+                ],
+                $validatedData
+            );
+
+            return redirect()->route('cms.about_page.custom_text_section.create')
+                ->with('success', 'Work Process Updated Successfully');
+        } catch (\Exception $e) {
+            Log::error("AboutPageController::updateCustomText " . $e->getMessage());
+            return redirect()->route('cms.about_page.custom_text_section.create')
+                ->with('error', 'Work Process Not Updated');
+        }
+    }
+
+
+    // // ============== FAQ SECTION ==============
+    // public function getFaqs()
+    // {
+    //     $data = CMS::where('page', Page::AboutPage->value)
+    //         ->where('section', Section::Faq->value)
+    //         ->first();
+
+    //     return view('backend.layouts.cms.about_page.faqs.create', compact('data'));
+    // }
+
+    // public function updateFaqs(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'title' => 'nullable|string|max:255',
+    //         'tags' => 'nullable|json', // store multiple questions/answers
+    //     ]);
+
+    //     CMS::updateOrCreate(
+    //         [
+    //             'page' => Page::AboutPage->value,
+    //             'section' => Section::Faq->value,
+    //         ],
+    //         $validatedData
+    //     );
+
+    //     return redirect()->route('cms.about_page.faqs.create')->with('success', 'FAQs Updated Successfully');
+    // }
+
+
+    // // ============== TESTIMONIALS SECTION ==============
+    // public function getTestimonials()
+    // {
+    //     $data = CMS::where('page', Page::AboutPage->value)
+    //         ->where('section', Section::Testimonials->value)
+    //         ->first();
+
+    //     return view('backend.layouts.cms.about_page.testimonials.create', compact('data'));
+    // }
+
+    // public function updateTestimonials(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'title' => 'nullable|string|max:255',
+    //         'tags' => 'nullable|json', // store multiple testimonials
+    //     ]);
+
+    //     CMS::updateOrCreate(
+    //         [
+    //             'page' => Page::AboutPage->value,
+    //             'section' => Section::Testimonials->value,
+    //         ],
+    //         $validatedData
+    //     );
+
+    //     return redirect()->route('cms.about_page.testimonials.create')->with('success', 'Testimonials Updated Successfully');
+    // }
+
+
+    // ================= Helper Functions =================
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
             'title' => 'nullable|string|max:255',
-            'tags' => 'nullable|json', // store team members
+            'sub_title' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'sub_description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+            'tags' => 'nullable|json',
+            'button_text' => 'nullable|string|max:255',
+            'link_url' => 'nullable|url',
         ]);
-
-        CMS::updateOrCreate(
-            [
-                'page' => Page::AboutPage->value,
-                'section' => Section::LeadershipTeam->value,
-            ],
-            $validatedData
-        );
-
-        return redirect()->route('cms.about_page.leadership_team.create')->with('success', 'Leadership Team Updated Successfully');
-    }
-
-
-    // ============== FAQ SECTION ==============
-    public function getFaqs()
-    {
-        $data = CMS::where('page', Page::AboutPage->value)
-            ->where('section', Section::Faq->value)
-            ->first();
-
-        return view('backend.layouts.cms.about_page.faqs.create', compact('data'));
-    }
-
-    public function updateFaqs(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'tags' => 'nullable|json', // store multiple questions/answers
-        ]);
-
-        CMS::updateOrCreate(
-            [
-                'page' => Page::AboutPage->value,
-                'section' => Section::Faq->value,
-            ],
-            $validatedData
-        );
-
-        return redirect()->route('cms.about_page.faqs.create')->with('success', 'FAQs Updated Successfully');
-    }
-
-
-    // ============== TESTIMONIALS SECTION ==============
-    public function getTestimonials()
-    {
-        $data = CMS::where('page', Page::AboutPage->value)
-            ->where('section', Section::Testimonials->value)
-            ->first();
-
-        return view('backend.layouts.cms.about_page.testimonials.create', compact('data'));
-    }
-
-    public function updateTestimonials(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'tags' => 'nullable|json', // store multiple testimonials
-        ]);
-
-        CMS::updateOrCreate(
-            [
-                'page' => Page::AboutPage->value,
-                'section' => Section::Testimonials->value,
-            ],
-            $validatedData
-        );
-
-        return redirect()->route('cms.about_page.testimonials.create')->with('success', 'Testimonials Updated Successfully');
     }
 }

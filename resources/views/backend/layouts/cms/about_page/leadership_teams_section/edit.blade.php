@@ -1,13 +1,17 @@
 @extends('backend.app')
-@section('title', 'Why Choose Us Page')
+@section('title', 'Our Leadership Teams Section')
 
 @push('styles')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css">
-    {{-- CKEditor CDN --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
     <style>
-        .ck-editor__editable_inline {
-            min-height: 300px;
+        .dropify-wrapper {
+            height: 200px;
+        }
+
+        .dropify-wrapper .dropify-preview .dropify-render img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 @endpush
@@ -16,7 +20,7 @@
 
     <div class="main-content-container overflow-hidden">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-            <h3 class="mb-0">Why Choose Us Page</h3>
+            <h3 class="mb-0">Our Leadership Teams Section</h3>
 
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb align-items-center mb-0 lh-1">
@@ -27,7 +31,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span class="fw-medium">Why Choose Us Edit Page</span>
+                        <span class="fw-medium">Testimonial Edit Page</span>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <span class="fw-medium">Edit</span>
@@ -41,46 +45,47 @@
 
 
                 <div class="mb-4">
-                    <h4 class="fs-20 mb-1">Why Choose Us Page</h4>
-                    <p class="fs-15">Edit Why Choose Us Page here.</p>
+                    <h4 class="fs-20 mb-1">Our Leadership Teams Section</h4>
+                    <p class="fs-15">Edit Our Leadership Teams Section here.</p>
                 </div>
 
-                <form action="{{ route('cms.home_page.how_it_work.update', $data->id) }}" method="POST"
+                <form action="{{ route('cms.about_page.leadership_teams_section.update', $data->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT') <!-- This is important for update actions -->
                     <div class="row">
+                        {{-- star number feild --}}
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
                                 <label class="label text-secondary">Title<span class="text-danger">*</span></label>
                                 <div class="form-group position-relative">
-                                    <input type="text"
-                                        class="form-control text-dark  h-55 @error('title') is-invalid @enderror"
-                                        name="title" value="{{ old('title', $data->title ?? '') }}"
-                                        placeholder="Enter title here">
+                                    <input type="tesxt"
+                                        class="form-control text-dark h-55 @error('title') is-invalid @enderror"
+                                        name="title" value="{{ old('title', $data->title ?? '') }}" placeholder="Enter title here">
                                 </div>
                                 @error('title')
                                     <div id="title-error" class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        {{-- description feild --}}
+                        <div class="col-lg-6">
                             <div class="form-group mb-4">
-                                <label class="label text-secondary">Description<span
-                                        class="text-danger">*</span></label>
+                                <label class="label text-secondary">Description<span class="text-danger">*</span></label>
                                 <div class="form-group position-relative">
                                     <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description"
-                                        placeholder="Enter description here">{{ old('description', $data->description ?? '') }}</textarea>
+                                        placeholder="Enter description here" rows="7">{{ old('description', $data->description ?? '') }}</textarea>
                                 </div>
                                 @error('description')
                                     <div id="description-error" class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                       
-                        <div class="col-lg-12">
+
+                        <div class="col-lg-6">
                             <div class="form-group ">
-                                <label class="label text-secondary mb-1">Icon Image<span class="text-danger">*</span></label>
+                                <label class="label text-secondary mb-1">Item Image<span
+                                        class="text-danger">*</span></label>
                                 <input class="dropify form-control @error('image') is-invalid @enderror" type="file"
                                     name="image" accept="image/*"
                                     data-default-file="{{ isset($data) && $data->image ? asset($data->image) : '' }}">
@@ -89,13 +94,13 @@
                                 @enderror
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex flex-wrap gap-3">
                                 <button type="reset" class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white"
-                                    onclick="window.location.href='{{ route('cms.home_page.how_it_work.index') }}'">Cancel</button>
+                                    onclick="window.location.href='{{ route('cms.about_page.leadership_teams_section.index') }}'">Cancel</button>
                                 <button type="submit" class="btn btn-primary py-2 px-4 fw-medium fs-16"> <i
                                         class="ri-check-line text-white fw-medium"></i> Update</button>
                             </div>
@@ -109,17 +114,6 @@
 @endsection
 
 @push('scripts')
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#page_content'), {
-                removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'ImageUpload', 'MediaEmbed'],
-                toolbar: ['bold', 'italic', 'heading', '|', 'undo', 'redo']
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
     <script type="text/javascript" src="https://jeremyfagis.github.io/dropify/dist/js/dropify.min.js"></script>
     <script>
         $(document).ready(function() {

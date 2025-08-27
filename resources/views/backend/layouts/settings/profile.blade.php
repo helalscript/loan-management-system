@@ -3,6 +3,17 @@
 
 @push('styles')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css">
+    <style>
+        .dropify-wrapper {
+            height: 200px;
+        }
+
+        .dropify-wrapper .dropify-preview .dropify-render img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 @endpush
 @section('content')
     <div class="main-content-container overflow-hidden">
@@ -31,12 +42,12 @@
             <div class="card-body p-4">
                 <ul class="ps-0 mb-4 list-unstyled d-flex flex-wrap gap-2 gap-lg-3">
                     <li>
-                        <a href="{{route('profile_settings.index')}}"
+                        <a href="{{ route('profile_settings.index') }}"
                             class="btn btn-primary border border-primary bg-primary text-white py-2 px-3 fw-semibold">Account
                             Settings</a>
                     </li>
                     <li>
-                        <a href="{{route('profile_settings.password')}}"
+                        <a href="{{ route('profile_settings.password') }}"
                             class="btn btn-primary border border-primary bg-transparent text-primary py-2 px-3 fw-semibold">Change
                             Password</a>
                     </li>
@@ -71,7 +82,8 @@
                                 <label class="label text-secondary">Email Address</label>
                                 <div class="form-group position-relative">
                                     <input type="email"
-                                        class="form-control text-dark ps-5 h-55 @error('email') is-invalid @enderror" name="email" required placeholder="Email Address"
+                                        class="form-control text-dark ps-5 h-55 @error('email') is-invalid @enderror"
+                                        name="email" required placeholder="Email Address"
                                         value="{{ old('email', $user->email) }}">
                                     <i
                                         class="ri-mail-line position-absolute top-50 start-0 translate-middle-y fs-20 text-gray-light ps-20"></i>
@@ -102,8 +114,8 @@
                             <div class="form-group mb-4">
                                 <label class="label text-secondary">Gender</label>
                                 <div class="form-group position-relative">
-                                    <select class="form-select form-control ps-5 h-55 @error('gender') is-invalid @enderror" name="gender" required
-                                        aria-label="Default select example">
+                                    <select class="form-select form-control ps-5 h-55 @error('gender') is-invalid @enderror"
+                                        name="gender" required aria-label="Default select example">
                                         <option value="" class="text-dark">Select Gender</option>
                                         <option value="male"
                                             {{ old('gender', $user->gender ?? '') == 'male' ? 'selected' : '' }}
@@ -111,7 +123,8 @@
                                         <option value="female"
                                             {{ old('gender', $user->gender ?? '') == 'female' ? 'selected' : '' }}
                                             class="text-dark">Female</option>
-                                        <option value="others" {{ old('gender', $user->gender ?? '') == 'others' ? 'selected' : '' }}
+                                        <option value="others"
+                                            {{ old('gender', $user->gender ?? '') == 'others' ? 'selected' : '' }}
                                             class="text-dark">Others</option>
                                     </select>
                                     <i
@@ -142,7 +155,8 @@
                         <div class="col-lg-12">
                             <div class="d-flex flex-wrap gap-3">
                                 {{-- <button type="submit" class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white">Cancel</button> --}}
-                                <button type="submit" class="btn btn-primary py-2 px-4 fw-medium fs-16"> <i class="ri-check-line text-white fw-medium"></i> Update Profile</button>
+                                <button type="submit" class="btn btn-primary py-2 px-4 fw-medium fs-16"> <i
+                                        class="ri-check-line text-white fw-medium"></i> Update Profile</button>
                             </div>
                         </div>
                     </div>

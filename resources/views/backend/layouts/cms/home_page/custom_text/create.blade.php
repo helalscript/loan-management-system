@@ -1,5 +1,5 @@
 @extends('backend.app')
-@section('title', 'Work Process Section')
+@section('title', 'Custom Text Section')
 
 @push('styles')
     {{--  Quill v2.0.2 only --}}
@@ -10,14 +10,14 @@
 @section('content')
     <div class="main-content-container overflow-hidden">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-            <h3 class="mb-0">CMS Work Process Section</h3>
+            <h3 class="mb-0">CMS Custom Text Section</h3>
         </div>
 
         <div class="card bg-white border-0 rounded-3 mb-4">
             <div class="card-body p-4">
                 <div class="mb-4">
-                    <h4 class="fs-20 mb-1">CMS Work Process Section</h4>
-                    <p class="fs-15">Update Work Process Section details here.</p>
+                    <h4 class="fs-20 mb-1">CMS Custom Text Section</h4>
+                    <p class="fs-15">Update Custom Text Section details here.</p>
                 </div>
 
                 <form action="{{ route('cms.home_page.custom_text_section.update') }}" method="POST">
@@ -84,7 +84,7 @@
     @if (old('description'))
         quill.root.innerHTML = {!! json_encode(old('description')) !!};
     @else
-        quill.root.innerHTML = {!! json_encode($data->description) !!};
+        quill.root.innerHTML = {!! json_encode($data?->description) !!};
     @endif
 
     // Update hidden input before form submission

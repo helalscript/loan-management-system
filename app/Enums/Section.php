@@ -27,7 +27,8 @@ enum Section: string
     case OurMission = 'our_mission';
     case HowItWorks = 'how_it_works';
     case OurServices = 'our_services';
-    case LeadershipTeam = 'leadership_team';
+    case LeadershipTeamSection = 'leadership_team_section';
+    case LeadershipTeamSectionContent = 'leadership_team_section_content';
     case AboutFaqs = 'about_faqs'; // to differentiate from home page faq
     case AboutTestimonials = 'about_testimonials';
     case HowitWorksSection = 'howit_works_section';
