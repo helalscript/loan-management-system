@@ -188,7 +188,7 @@ $systemSetting = App\Models\SystemSetting::first();
                             FAQ's
                         </a>
                     </li>
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('cms.home_page.testimonial_section.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
                             Testimonials
@@ -199,11 +199,11 @@ $systemSetting = App\Models\SystemSetting::first();
                             class="menu-link {{ request()->routeIs('cms.home_page.custom_text_section.*') ? 'active' : '' }}">
                             Custom Text
                         </a>
-                    </li>
+                    </li> --}}
 
                 </ul>
             </li>
-            <!-- CMS About Page Menu Item -->
+            {{-- <!-- CMS About Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.about_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">auto_awesome</span>
@@ -248,18 +248,6 @@ $systemSetting = App\Models\SystemSetting::first();
                             Leadership Team
                         </a>
                     </li>
-                    {{-- <li class="menu-item">
-                        <a href="{{ route('cms.about_page.faqs.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.about_page.faqs.*') ? 'active' : '' }}">
-                            FAQ's
-                        </a>
-                    </li> --}}
-                    {{-- <li class="menu-item">
-                        <a href="{{ route('cms.about_page.testimonials.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.about_page.testimonials.*') ? 'active' : '' }}">
-                            Testimonials
-                        </a>
-                    </li> --}}
                     <li class="menu-item">
                         <a href="{{ route('cms.about_page.custom_text_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.custom_text_section.*') ? 'active' : '' }}">
@@ -366,7 +354,7 @@ $systemSetting = App\Models\SystemSetting::first();
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
             <!-- Logout Menu Item -->
             <li class="menu-item">
