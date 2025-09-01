@@ -188,7 +188,7 @@ $systemSetting = App\Models\SystemSetting::first();
                             FAQ's
                         </a>
                     </li>
-                    {{-- <li class="menu-item">
+                    <li class="menu-item">
                         <a href="{{ route('cms.home_page.testimonial_section.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
                             Testimonials
@@ -199,11 +199,11 @@ $systemSetting = App\Models\SystemSetting::first();
                             class="menu-link {{ request()->routeIs('cms.home_page.custom_text_section.*') ? 'active' : '' }}">
                             Custom Text
                         </a>
-                    </li> --}}
+                    </li>
 
                 </ul>
             </li>
-            {{-- <!-- CMS About Page Menu Item -->
+            <!-- CMS About Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.about_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">auto_awesome</span>
@@ -248,6 +248,18 @@ $systemSetting = App\Models\SystemSetting::first();
                             Leadership Team
                         </a>
                     </li>
+                    {{-- <li class="menu-item">
+                        <a href="{{ route('cms.about_page.faqs.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.about_page.faqs.*') ? 'active' : '' }}">
+                            FAQ's
+                        </a>
+                    </li> --}}
+                    {{-- <li class="menu-item">
+                        <a href="{{ route('cms.about_page.testimonials.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.about_page.testimonials.*') ? 'active' : '' }}">
+                            Testimonials
+                        </a>
+                    </li> --}}
                     <li class="menu-item">
                         <a href="{{ route('cms.about_page.custom_text_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.about_page.custom_text_section.*') ? 'active' : '' }}">
@@ -257,15 +269,21 @@ $systemSetting = App\Models\SystemSetting::first();
                 </ul>
             </li>
             <!-- CMS Resources Page Menu Item -->
-            <li class="menu-item {{ request()->routeIs('cms.resources_page.*') ? 'open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('cms.resources_page.*','blogs.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">local_library</span>
                     <span class="title">Resources</span>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.loan_calculator.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.resources_page.loan_calculator.*') ? 'active' : '' }}">
+                        <a href="{{ route('cms.resources_page.hero_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.resources_page.hero_section.create') ? 'active' : '' }}">
+                            Hero Section
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('cms.resources_page.loan_calculator_section.index') }}"
+                            class="menu-link {{ request()->routeIs('cms.resources_page.loan_calculator_section.*') ? 'active' : '' }}">
                             Loan Calculator
                         </a>
                     </li>
@@ -294,20 +312,36 @@ $systemSetting = App\Models\SystemSetting::first();
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.faqs.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.resources_page.faqs.*') ? 'active' : '' }}">
-                            FAQ's
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{ route('cms.resources_page.blogs.create') }}"
-                            class="menu-link {{ request()->routeIs('cms.resources_page.blogs.*') ? 'active' : '' }}">
+                        <a href="{{ route('blogs.index') }}"
+                            class="menu-link {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
                             Blogs
                         </a>
                     </li>
                 </ul>
             </li>
-            <!-- CMS Contact Us Page Menu Item -->
+            <!-- CMS State Lincensing Page Menu Item -->
+            <li class="menu-item {{ request()->routeIs('cms.state_licensing_page.*') ? 'open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">account_balance</span>
+                    <span class="title">State Licensing Page</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="{{ route('cms.state_licensing_page.hero_section.create') }}"
+                            class="menu-link {{ request()->routeIs('cms.state_licensing_page.hero_section.*') ? 'active' : '' }}">
+                           Hero Section
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('cms.state_licensing_page.content_section.index') }}"
+                            class="menu-link {{ request()->routeIs('cms.state_licensing_page.content_section.*') ? 'active' : '' }}">
+                            Contact Section
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- <!-- CMS Contact Us Page Menu Item -->
             <li class="menu-item {{ request()->routeIs('cms.contact_us_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">contacts</span>

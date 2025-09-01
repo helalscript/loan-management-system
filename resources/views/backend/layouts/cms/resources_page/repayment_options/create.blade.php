@@ -22,12 +22,12 @@
                         <!-- Title Field -->
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
-                                <label class="label text-secondary">Title<span class="text-danger">*</span></label>
+                                <label class="label text-secondary">Section Title<span class="text-danger">*</span></label>
                                 <div class="form-group position-relative">
                                     <input type="text"
                                         class="form-control text-dark ps-5 h-55 @error('title') is-invalid @enderror"
                                         name="title" value="{{ old('title', $data->title ?? '') }}" required
-                                        placeholder="Enter Title here">
+                                        placeholder="Enter Section Title here">
                                 </div>
                                 @error('title')
                                     <div id="title-error" class="text-danger">{{ $message }}</div>
@@ -38,12 +38,12 @@
                         <!-- Sub Title Field -->
                         <div class="col-lg-6">
                             <div class="form-group mb-4">
-                                <label class="label text-secondary">Sub Title</label>
+                                <label class="label text-secondary">Title</label>
                                 <div class="form-group position-relative">
                                     <input type="text"
                                         class="form-control text-dark ps-5 h-55 @error('sub_title') is-invalid @enderror"
                                         name="sub_title" value="{{ old('sub_title', $data->sub_title ?? '') }}"
-                                        placeholder="Enter Sub Title here">
+                                        placeholder="Enter Title here">
                                 </div>
                                 @error('sub_title')
                                     <div id="sub_title-error" class="text-danger">{{ $message }}</div>
@@ -61,39 +61,6 @@
                                 </div>
                                 @error('description')
                                     <div id="description-error" class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Sub Description Field -->
-                        <div class="col-lg-12">
-                            <div class="form-group mb-4">
-                                <label class="label text-secondary">Sub Description</label>
-                                <div class="form-group position-relative">
-                                    <textarea class="form-control text-dark ps-5 @error('sub_description') is-invalid @enderror"
-                                        name="sub_description" rows="3" placeholder="Enter Sub Description here">{{ old('sub_description', $data->sub_description ?? '') }}</textarea>
-                                </div>
-                                @error('sub_description')
-                                    <div id="sub_description-error" class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Image Field -->
-                        <div class="col-lg-12">
-                            <div class="form-group mb-4">
-                                <label class="label text-secondary">Image</label>
-                                <div class="form-group position-relative">
-                                    <input type="file" class="form-control text-dark ps-5 h-55 @error('image') is-invalid @enderror"
-                                        name="image" accept="image/*">
-                                </div>
-                                @if(isset($data) && $data->image)
-                                    <div class="mt-2">
-                                        <img src="{{ asset($data->image) }}" alt="Current Image" class="img-thumbnail" style="max-width: 200px;">
-                                    </div>
-                                @endif
-                                @error('image')
-                                    <div id="image-error" class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>

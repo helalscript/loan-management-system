@@ -28,7 +28,7 @@
                     <p class="fs-15">Update Hero Section details here.</p>
                 </div>
 
-                <form action="{{ route('cms.home_page.hero_section.update') }}" method="POST"
+                <form action="{{ route('cms.about_page.hero_section.update') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="row">
