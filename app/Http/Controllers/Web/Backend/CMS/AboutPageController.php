@@ -80,18 +80,39 @@ class AboutPageController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
+            'sub_title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
         ]);
+        try {
+            $data = CMS::where('page', Page::AboutPage->value)
+                ->where('section', Section::HeroSection->value)
+                ->first();
 
-        CMS::updateOrCreate(
-            [
-                'page' => Page::AboutPage->value,
-                'section' => Section::OurVision->value,
-            ],
-            $validatedData
-        );
+            if ($request->hasFile('image')) {
+                if ($data && $data->image && file_exists(public_path($data->image))) {
+                    Helper::fileDelete(public_path($data->image));
+                }
+                $validatedData['image'] = Helper::fileUpload(
+                    $request->file('image'),
+                    'our_vision',
+                    time() . '_' . getFileName($request->file('image'))
+                );
+            }
 
-        return redirect()->route('cms.about_page.our_vision.create')->with('success', 'Our Vision Updated Successfully');
+            CMS::updateOrCreate(
+                [
+                    'page' => Page::AboutPage->value,
+                    'section' => Section::OurVision->value,
+                ],
+                $validatedData
+            );
+
+            return redirect()->route('cms.about_page.our_vision.create')->with('success', 'Our Vision Updated Successfully');
+        } catch (\Exception $e) {
+            Log::error("AboutPageController::updateOurVision " . $e->getMessage());
+            return redirect()->back()->with('error', 'Our Vision Not Updated');
+        }
     }
 
 
@@ -109,18 +130,39 @@ class AboutPageController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
+            'sub_title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
         ]);
+        try {
+            $data = CMS::where('page', Page::AboutPage->value)
+                ->where('section', Section::HeroSection->value)
+                ->first();
 
-        CMS::updateOrCreate(
-            [
-                'page' => Page::AboutPage->value,
-                'section' => Section::OurMission->value,
-            ],
-            $validatedData
-        );
+            if ($request->hasFile('image')) {
+                if ($data && $data->image && file_exists(public_path($data->image))) {
+                    Helper::fileDelete(public_path($data->image));
+                }
+                $validatedData['image'] = Helper::fileUpload(
+                    $request->file('image'),
+                    'our_mission',
+                    time() . '_' . getFileName($request->file('image'))
+                );
+            }
 
-        return redirect()->route('cms.about_page.our_mission.create')->with('success', 'Our Mission Updated Successfully');
+            CMS::updateOrCreate(
+                [
+                    'page' => Page::AboutPage->value,
+                    'section' => Section::OurMission->value,
+                ],
+                $validatedData
+            );
+
+            return redirect()->route('cms.about_page.our_mission.create')->with('success', 'Our Mission Updated Successfully');
+        } catch (\Exception $e) {
+            Log::error("AboutPageController::updateOurMission " . $e->getMessage());
+            return redirect()->back()->with('error', 'Our Mission Not Updated');
+        }
     }
 
     // ============== OUR SERVICES SECTION ==============

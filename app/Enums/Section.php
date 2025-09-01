@@ -35,7 +35,8 @@ enum Section: string
     case HowitWorksSectionContent = 'howit_works_section_content';
 
     // ===== Resources Page Sections =====
-    case LoanCalculator = 'loan_calculator';
+    case LoanCalculatorSection = 'loan_calculator_section';
+    case LoanCalculatorSectionContent = 'loan_calculator_section_content';
     case RipeCreditTrackerGuide = 'ripe_credit_tracker_guide';
     case RepaymentOptions = 'repayment_options';
     case FeesPolicies = 'fees_policies';
@@ -51,6 +52,9 @@ enum Section: string
     case Login = 'login';
     case Register = 'register';
     case ForgotPassword = 'forgot_password';
+
+    case PageContentSection = 'page_content_section';
+    case PageContentSectionContent = 'page_content_section_content';
 
 
 }

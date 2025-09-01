@@ -9,6 +9,7 @@
  */
 
 
+use App\Http\Controllers\Web\Backend\BlogController;
 use App\Http\Controllers\Web\Backend\CMS\FaqController;
 use App\Http\Controllers\Web\Backend\ContactMessageController;
 use App\Http\Controllers\Web\Backend\NotificationController;
@@ -57,6 +58,10 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
   //Route for FaqController
   Route::resource('/faqs', FaqController::class)->names('faqs');
   Route::post('/faqs/status/{id}', [FaqController::class, 'status'])->name('faqs.status');
+
+  Route::resource('/blogs', BlogController::class)->names('blogs');
+  Route::post('/blogs/status/{id}', [BlogController::class, 'status'])->name('blogs.status');
+  Route::post('/blogs/update-container', [BlogController::class, 'updateContainer'])->name('blogs.update_container');
 
   // Routes for NotificationController
   Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notification.read');
