@@ -11,6 +11,8 @@ enum Page: string
     // case ContactUsPage = 'contact_us_page';
     case AuthPage = 'auth_page';
 
+    case StateLicensingPage = 'state_licensing_page';
+
 }
 
 
