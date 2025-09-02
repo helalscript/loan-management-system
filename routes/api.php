@@ -58,10 +58,13 @@ Route::get("dynamic-pages", [HomePageController::class, "getDynamicPages"]);
 Route::get("dynamic-pages/single/{slug}", [HomePageController::class, "showDaynamicPage"]);
 
 //route for home page 
-Route::get('/cms/home-page/hero-section', [HomePageController::class, 'getHeroSection']);
-Route::get('/cms/home-page/welcome-section', [HomePageController::class, 'getWelcomeSection']);
-Route::get('/cms/home-page/employer-section', [HomePageController::class, 'getEmployerSection']);
-Route::get('/cms/home-page/how-it-work-section', [HomePageController::class, 'getHowItWorkSection']);
-Route::get('/cms/home-page/job-seeker-section', [HomePageController::class, 'getJobSeekerSection']);
-Route::get('/cms/home-page/our-expertise-section', [HomePageController::class, 'getOurExpertiseSection']);
-Route::get('/cms/home-page/why-choose-us-section', [HomePageController::class, 'getWhyChooseUsSection']);
+Route::group(['prefix' => 'cms/home-page'], function () {
+    Route::get('/hero-section', [HomePageController::class, 'getHeroSection']);
+    Route::get('/service-section', [HomePageController::class, 'getServiceSection']);
+    Route::get('/about-section', [HomePageController::class, 'getAboutUsSection']);
+    Route::get('/quick-rate-section', [HomePageController::class, 'getQuickRateCheckSection']);
+    Route::get('/work-process-section', [HomePageController::class, 'getWorkProcessSection']);
+    Route::get('/faq-section', [HomePageController::class, 'getFaqSection']);
+    Route::get('/testimonial-section', [HomePageController::class, 'getTestimonialSection']);
+    Route::get('/custom-text-section', [HomePageController::class, 'getCustomTextSection']);
+});
