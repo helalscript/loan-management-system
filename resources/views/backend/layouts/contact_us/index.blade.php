@@ -50,7 +50,6 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Message Type</th>
                                         <th scope="col">Message</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -147,20 +146,7 @@
                         orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
-                            if (data.length > 50) {
-                                return data.substring(0, 50) + '...';
-                            } else {
-                                return data;
-                            }
-                        }
-                    },
-                    {
-                        data: 'type',
-                        name: 'type',
-                        orderable: true,
-                        searchable: true,
-                        render: function(data, type, row) {
-                            if (data.length > 50) {
+                            if (data?.length > 50) {
                                 return data.substring(0, 50) + '...';
                             } else {
                                 return data;
@@ -173,7 +159,7 @@
                         orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
-                            if (data.length > 100) {
+                            if (data?.length > 100) {
                                 return data.substring(0, 100) + '...';
                             } else {
                                 return data;

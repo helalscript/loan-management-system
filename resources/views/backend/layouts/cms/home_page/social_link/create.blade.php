@@ -55,7 +55,7 @@
                                 <label class="label text-secondary">Profile Link<span
                                         class="text-danger">*</span></label>
                                 <div class="form-group position-relative">
-                                    <input type="text"
+                                    <input type="url"
                                         class="form-control text-dark ps-5 h-55 @error('link_url') is-invalid @enderror"
                                         name="link_url" value="{{ old('link_url') }}"
                                         placeholder="https://github.com/helalscript">
