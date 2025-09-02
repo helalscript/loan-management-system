@@ -6,7 +6,6 @@ use App\Enums\Page;
 use App\Enums\Section;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\API\V1\CMS\GetFeatureSectionResource;
 use App\Models\CMS;
 use App\Models\DynamicPage;
 use App\Models\Faq;
