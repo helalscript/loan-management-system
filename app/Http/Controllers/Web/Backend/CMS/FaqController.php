@@ -54,7 +54,7 @@ class FaqController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        return view("backend.layouts.faq.index",compact('FaqContainer'));
+        return view("backend.layouts.faq.index", compact('FaqContainer'));
     }
 
     /**
@@ -180,7 +180,7 @@ class FaqController extends Controller
         ]);
 
         try {
-           $data= CMS::updateOrCreate(
+            $data = CMS::updateOrCreate(
                 [
                     'page' => Page::HomePage->value,
                     'section' => Section::FaqContainer->value,
