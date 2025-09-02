@@ -80,6 +80,13 @@ $systemSetting = App\Models\SystemSetting::first();
                     <span class="title">Social Link</span>
                 </a>
             </li>
+            <li class="menu-item open">
+                <a href="{{ route('cms.home_page.testimonial_section.index') }}"
+                    class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">stars</span>
+                    <span class="title">Testimonials</span>
+                </a>
+            </li>
             <li class="menu-title small text-uppercase">
                 <span class="menu-title-text">OTHERS</span>
             </li>
@@ -196,12 +203,12 @@ $systemSetting = App\Models\SystemSetting::first();
                             FAQ's
                         </a>
                     </li> --}}
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('cms.home_page.testimonial_section.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
                             Testimonials
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="menu-item">
                         <a href="{{ route('cms.home_page.custom_text_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.custom_text_section.*') ? 'active' : '' }}">
