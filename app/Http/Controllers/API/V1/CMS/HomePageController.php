@@ -88,7 +88,17 @@ class HomePageController extends Controller
             return Helper::jsonErrorResponse('Failed to retrieve Dynamic page data.', 403);
         }
     }
-
+    public function getSocialLinks(Request $request): JsonResponse
+    {
+        try {
+            $per_page = $request->has('per_page') ? $request->per_page : 25;
+            $data = CMS::select('id', 'title', 'image', 'link_url')->where('page', Page::HomePage)->where('section', Section::SocialLinkContainer)->where('status', 'active')->paginate($per_page);
+            return Helper::jsonResponse(true, 'Social links data fatced successfully', 200, $data, true);
+        } catch (Exception $e) {
+            Log::error("HomePageController::getSocialLinks" . $e->getMessage());
+            return Helper::jsonErrorResponse('Something went wrong', 500);
+        }
+    }
 
     public function getHeroSection()
     {

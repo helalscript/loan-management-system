@@ -20,6 +20,7 @@ enum Section: string
     case Footer = 'footer';
     case CustomText = 'custom_text';
     case FaqContainer = 'faq_container';
+    case SocialLinkContainer = 'social_link_container';
 
     // ===== About Page Sections =====
     case OurStory = 'our_story';
