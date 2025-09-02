@@ -35,7 +35,12 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:100',
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:100',
+            'gender' => 'nullable|string|in:male,female,others',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'cover_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'phone' => 'nullable|unique:users,phone,' . auth()->user()->id . '|numeric|max_digits:20',
@@ -67,6 +72,12 @@ class UserController extends Controller
             } else {
                 $validatedData['cover_photo'] = $user->cover_photo;
             }
+            // set name
+            $name = null;
+            if (!empty($validatedData['first_name']) && !empty($validatedData['last_name'])) {
+                $name = $validatedData['first_name'] . ' ' . $validatedData['last_name'];
+            }
+            $validatedData['name'] = $name;
 
             $user->update($validatedData);
             return Helper::jsonResponse(true, 'Profile updated successfully', 200, $user);

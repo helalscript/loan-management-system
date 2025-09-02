@@ -33,25 +33,6 @@ $systemSetting = App\Models\SystemSetting::first();
             <li class="menu-title small text-uppercase">
                 <span class="menu-title-text">APPS</span>
             </li>
-
-
-            {{-- <!-- Coaches Menu Item -->
-            <li class="menu-item {{ request()->routeIs('users.*') ? 'open' : '' }}">
-                <a href="javascript:void(0);" class="menu-link menu-toggle active">
-                    <span class="material-symbols-outlined menu-icon">psychology</span>
-                    <span class="title">Client</span>
-                </a>
-                <ul class="menu-sub">
-                    <!-- Coaches Settings Submenu -->
-                    <li class="menu-item ">
-                        <a href="{{ route('users.index') }}"
-                            class="menu-link {{ request()->routeIs('users.index') ? 'active' : '' }} ">
-                            Client List
-                        </a>
-                    </li>
-
-                </ul>
-            </li> --}}
             <!-- Category Menu Item -->
             {{-- <li class="menu-item {{ request()->routeIs('candidates.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
@@ -71,13 +52,41 @@ $systemSetting = App\Models\SystemSetting::first();
             </li> --}}
 
             <!-- Contact Support Message Menu Item -->
-            {{-- <li class="menu-item open">
-                <a href="{{ route('admin_cms.contact_us_page.index') }}"
+            <li class="menu-item open">
+                <a href="{{ route('admin_contact_us.index') }}"
                     class="menu-link {{ request()->routeIs('admin_contact_us.*') ? 'active' : '' }}">
                     <span class="material-symbols-outlined menu-icon">content_paste</span>
-                    <span class="title">Message</span>
+                    <span class="title">Contact Message</span>
                 </a>
-            </li> --}}
+            </li>
+            <li class="menu-item open">
+                <a href="{{ route('faqs.index') }}"
+                    class="menu-link {{ request()->routeIs('faqs.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">help_outline</span>
+                    <span class="title">FAQ's</span>
+                </a>
+            </li>
+            <li class="menu-item open">
+                <a href="{{ route('blogs.index') }}"
+                    class="menu-link {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">book</span>
+                    <span class="title">Blogs</span>
+                </a>
+            </li>
+            <li class="menu-item open">
+                <a href="{{ route('cms.home_page.social_link.index') }}"
+                    class="menu-link {{ request()->routeIs('cms.home_page.social_link.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">link</span>
+                    <span class="title">Social Link</span>
+                </a>
+            </li>
+            <li class="menu-item open">
+                <a href="{{ route('cms.home_page.testimonial_section.index') }}"
+                    class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">stars</span>
+                    <span class="title">Testimonials</span>
+                </a>
+            </li>
             <li class="menu-title small text-uppercase">
                 <span class="menu-title-text">OTHERS</span>
             </li>
@@ -141,18 +150,18 @@ $systemSetting = App\Models\SystemSetting::first();
             </li>
 
             <!-- CMS Home Page Menu Item -->
-            <li class="menu-item {{ request()->routeIs('cms.home_page.*', 'faqs.*') ? 'open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('cms.home_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">home</span>
                     <span class="title">Home Page</span>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('cms.home_page.social_link.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.social_link.*') ? 'active' : '' }}">
                             Social Link
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="menu-item">
                         <a href="{{ route('cms.home_page.hero_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.hero_section.create') ? 'active' : '' }}">
@@ -188,18 +197,18 @@ $systemSetting = App\Models\SystemSetting::first();
                         </a>
                     </li>
 
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('faqs.index') }}"
                             class="menu-link {{ request()->routeIs('faqs.*') ? 'active' : '' }}">
                             FAQ's
                         </a>
-                    </li>
-                    <li class="menu-item">
+                    </li> --}}
+                    {{-- <li class="menu-item">
                         <a href="{{ route('cms.home_page.testimonial_section.index') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.testimonial_section.*') ? 'active' : '' }}">
                             Testimonials
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="menu-item">
                         <a href="{{ route('cms.home_page.custom_text_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.custom_text_section.*') ? 'active' : '' }}">
@@ -275,7 +284,7 @@ $systemSetting = App\Models\SystemSetting::first();
                 </ul>
             </li>
             <!-- CMS Resources Page Menu Item -->
-            <li class="menu-item {{ request()->routeIs('cms.resources_page.*','blogs.*') ? 'open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('cms.resources_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">local_library</span>
                     <span class="title">Resources</span>
@@ -317,12 +326,12 @@ $systemSetting = App\Models\SystemSetting::first();
                             Security & Privacy
                         </a>
                     </li>
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{ route('blogs.index') }}"
                             class="menu-link {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
                             Blogs
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
             <!-- CMS State Lincensing Page Menu Item -->
@@ -335,7 +344,7 @@ $systemSetting = App\Models\SystemSetting::first();
                     <li class="menu-item">
                         <a href="{{ route('cms.state_licensing_page.hero_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.state_licensing_page.hero_section.*') ? 'active' : '' }}">
-                           Hero Section
+                            Hero Section
                         </a>
                     </li>
                     <li class="menu-item">

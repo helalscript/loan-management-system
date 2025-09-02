@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span class="fw-medium">About Page </span>
+                        <span class="fw-medium">Resources Page </span>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <span class="fw-medium"> Item List</span>
@@ -41,8 +41,8 @@
                     <div class="card-body p-4">
 
                         <div class="mb-4">
-                            <h4 class="fs-20 mb-1">CMS How It Works Container</h4>
-                            <p class="fs-15">Update How It Works Container and site details here.</p>
+                            <h4 class="fs-20 mb-1">CMS Blogs Container</h4>
+                            <p class="fs-15">Update Blogs Container and site details here.</p>
                         </div>
 
                         <form action="{{ route('blogs.update_container') }}" method="POST"

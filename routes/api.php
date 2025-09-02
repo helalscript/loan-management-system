@@ -46,10 +46,8 @@ Route::group(['middleware' => ['auth:api', 'check_is_user']], function ($router)
 
 
 
-// only for user and host
-Route::group(['middleware' => ['auth:api']], function ($router) {
-    Route::post('/contact-support-message/sent', [UserContactSupportController::class, 'store']);
-});
+ Route::post('/contact-support-message/sent', [UserContactSupportController::class, 'store']);
+
 
 // --------- cms part --------------
 Route::get('/cms/social-link', [HomePageController::class, 'getSocialLinks']);

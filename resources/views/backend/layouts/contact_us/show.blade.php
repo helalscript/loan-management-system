@@ -38,12 +38,12 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="text-muted">Type</label>
                                 <div class="fw-bold">{{ $data->type ?? 'N/A' }}</div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row mb-3">
                             @if ($data->first_name)
