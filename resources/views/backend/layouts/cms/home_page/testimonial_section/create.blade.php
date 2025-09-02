@@ -4,8 +4,6 @@
 @push('styles')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.css">
      <style>
-        
-
         .dropify-wrapper {
             height: 200px;
         }

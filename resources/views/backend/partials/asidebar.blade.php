@@ -148,6 +148,12 @@ $systemSetting = App\Models\SystemSetting::first();
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
+                        <a href="{{ route('cms.home_page.social_link.index') }}"
+                            class="menu-link {{ request()->routeIs('cms.home_page.social_link.*') ? 'active' : '' }}">
+                            Social Link
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a href="{{ route('cms.home_page.hero_section.create') }}"
                             class="menu-link {{ request()->routeIs('cms.home_page.hero_section.create') ? 'active' : '' }}">
                             Hero Section
