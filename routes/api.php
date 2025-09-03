@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\SocialLoginController;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\V1\CMS\AboutPageController;
 use App\Http\Controllers\API\V1\CMS\EmployerPageController;
@@ -19,13 +20,18 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => 'guest:api'], function ($router) {
+    //register
+    Route::post('register', [RegisterController::class, 'register']);
+    Route::post('/verify-email', [RegisterController::class, 'VerifyEmail']);
+    Route::post('/resend-otp', [RegisterController::class, 'ResendOtp']);
     //login
     Route::post('login', [LoginController::class, 'login']);
     //forgot password
     Route::post('/forget-password', [ResetPasswordController::class, 'forgotPassword']);
     Route::post('/verify-otp', [ResetPasswordController::class, 'VerifyOTP']);
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']);
-
+    //social login
+    Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
 });
 
 Route::group(['middleware' => 'auth:api'], function ($router) {
@@ -46,7 +52,7 @@ Route::group(['middleware' => ['auth:api', 'check_is_user']], function ($router)
 
 
 
- Route::post('/contact-support-message/sent', [UserContactSupportController::class, 'store']);
+Route::post('/contact-support-message/sent', [UserContactSupportController::class, 'store']);
 
 
 // --------- cms part --------------
