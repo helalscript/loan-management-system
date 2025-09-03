@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -29,28 +31,28 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // $exceptions->render(function (Throwable $e, Request $request) {
-        //     if ($request->is('api/*')) {
-        //         if ($e instanceof ValidationException) {
-        //             return Helper::jsonErrorResponse($e->getMessage(), 422, $e->errors());
-        //         }
+        $exceptions->render(function (Throwable $e, Request $request) {
+            if ($request->is('api/*')) {
+                if ($e instanceof ValidationException) {
+                    return Helper::jsonErrorResponse($e->getMessage(), 422, $e->errors());
+                }
 
-        //         if ($e instanceof ModelNotFoundException) {
-        //             return Helper::jsonErrorResponse($e->getMessage(), 404);
-        //         }
+                if ($e instanceof ModelNotFoundException) {
+                    return Helper::jsonErrorResponse($e->getMessage(), 404);
+                }
 
-        //         if ($e instanceof AuthenticationException) {
-        //             return Helper::jsonErrorResponse($e->getMessage(), 401);
-        //         }
-        //         if ($e instanceof AuthorizationException) {
-        //             return Helper::jsonErrorResponse($e->getMessage(), 403);
-        //         }
-        //         // Dynamically determine the status code if available
-        //         $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
+                if ($e instanceof AuthenticationException) {
+                    return Helper::jsonErrorResponse($e->getMessage(), 401);
+                }
+                if ($e instanceof AuthorizationException) {
+                    return Helper::jsonErrorResponse($e->getMessage(), 403);
+                }
+                // Dynamically determine the status code if available
+                $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
 
-        //         return Helper::jsonErrorResponse($e->getMessage(), $statusCode);
-        //     } else {
-        //         return null;
-        //     }
-        // });
+                return Helper::jsonErrorResponse($e->getMessage(), $statusCode);
+            } else {
+                return null;
+            }
+        });
     })->create();
