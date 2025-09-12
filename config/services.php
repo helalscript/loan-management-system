@@ -39,11 +39,9 @@ return [
         'secret' => env('STRIPE_SECRET_KEY'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
-    'calendly' => [
-        'token' => env('CALENDLY_TOKEN'),
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
-    'openai' => [
-        'key' => env('OPENAI_KEY'),
-    ],
-
 ];
