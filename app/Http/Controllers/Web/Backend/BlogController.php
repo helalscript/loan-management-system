@@ -86,7 +86,7 @@ class BlogController extends Controller
                 $validatedData['thumbnail'] = Helper::fileUpload($request->file('thumbnail'), 'blog', time() . '_' . getFileName($request->file('thumbnail')));
             }
             $validatedData['tags'] = $request->input('tags') ? json_encode($request->input('tags')) : null; // Ensure tags is an array, even if empty, and json encode it
-
+            $validatedData['slug'] = Helper::makeSlug($validatedData['title'],'blogs');
             Blog::Create($validatedData);
             return redirect()->route('blogs.index')->with('success', 'Item created Successfully');
         } catch (Exception $e) {
