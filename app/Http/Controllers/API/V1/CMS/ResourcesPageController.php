@@ -9,8 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\CMS;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ResourcesPageController extends Controller
@@ -24,23 +22,25 @@ class ResourcesPageController extends Controller
                 ->where('status', 'active')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Helper::jsonResponse(true, 'No data found', 200, []);
             }
 
             return Helper::jsonResponse(true, 'Data fatced successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getHeroSection" . $e->getMessage());
+            Log::error('ResourcesPageController::getHeroSection'.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }
+
     public function getLoanCalculatorSectionSection()
     {
         try {
             $section = CMS::where([
                 ['page', Page::ResourcesPage],
                 ['section', Section::LoanCalculatorSection],
-                ['status', 'active']
+                ['status', 'active'],
             ])
                 ->select('id', 'title', 'sub_title', 'description')
                 ->first();
@@ -48,7 +48,7 @@ class ResourcesPageController extends Controller
             $contents = CMS::where([
                 ['page', Page::ResourcesPage],
                 ['section', Section::LoanCalculatorSectionContent],
-                ['status', 'active']
+                ['status', 'active'],
             ])
                 ->select('id', 'title', 'description')
                 ->get();
@@ -64,7 +64,8 @@ class ResourcesPageController extends Controller
 
             return Helper::jsonResponse(true, 'Data fetched successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getFeatureSection - " . $e->getMessage());
+            Log::error('ResourcesPageController::getFeatureSection - '.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }
@@ -78,13 +79,14 @@ class ResourcesPageController extends Controller
                 ->where('status', 'active')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Helper::jsonResponse(true, 'No data found', 200, []);
             }
 
             return Helper::jsonResponse(true, 'Data fatced successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getRipeCreditTrackerGuideSection" . $e->getMessage());
+            Log::error('ResourcesPageController::getRipeCreditTrackerGuideSection'.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }
@@ -98,13 +100,14 @@ class ResourcesPageController extends Controller
                 ->where('status', 'active')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Helper::jsonResponse(true, 'No data found', 200, []);
             }
 
             return Helper::jsonResponse(true, 'Data fatced successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getRepaymentOptionsSection" . $e->getMessage());
+            Log::error('ResourcesPageController::getRepaymentOptionsSection'.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }
@@ -114,46 +117,50 @@ class ResourcesPageController extends Controller
         try {
             $data = CMS::where('page', Page::ResourcesPage)
                 ->where('section', Section::FeesPolicies)
-                ->select('id', 'title', 'description','image')
+                ->select('id', 'title', 'description', 'image')
                 ->where('status', 'active')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Helper::jsonResponse(true, 'No data found', 200, []);
             }
 
             return Helper::jsonResponse(true, 'Data fatced successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getFeesPoliciesSection" . $e->getMessage());
+            Log::error('ResourcesPageController::getFeesPoliciesSection'.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }
+
     public function getSecurityPrivacySection()
     {
         try {
             $data = CMS::where('page', Page::ResourcesPage)
                 ->where('section', Section::SecurityPrivacy)
-                ->select('id', 'title', 'description','image')
+                ->select('id', 'title', 'description', 'image')
                 ->where('status', 'active')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Helper::jsonResponse(true, 'No data found', 200, []);
             }
 
             return Helper::jsonResponse(true, 'Data fatced successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getSecurityPrivacySection" . $e->getMessage());
+            Log::error('ResourcesPageController::getSecurityPrivacySection'.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }
+
     public function getBlogsSection()
     {
         try {
             $section = CMS::where([
                 ['page', Page::ResourcesPage],
                 ['section', Section::Blogs],
-                ['status', 'active']
+                ['status', 'active'],
             ])
                 ->select('id', 'title', 'sub_title')
                 ->first();
@@ -172,7 +179,58 @@ class ResourcesPageController extends Controller
 
             return Helper::jsonResponse(true, 'Data fetched successfully', 200, $data);
         } catch (Exception $e) {
-            Log::error("ResourcesPageController::getBlogsSection - " . $e->getMessage());
+            Log::error('ResourcesPageController::getBlogsSection - '.$e->getMessage());
+
+            return Helper::jsonErrorResponse('Something went wrong', 500);
+        }
+    }
+
+    public function getSingleBlog($slug)
+    {
+        try {
+            $data = Blog::where('slug', $slug)
+                ->where('status', 'active')
+                ->first();
+
+            if (! $data) {
+                return Helper::jsonResponse(true, 'No data found', 200, []);
+            }
+
+            // Assuming your Blog model has a "tags" relation or "tags" column
+            $tags = json_decode($data->tags, true) ?? [];
+
+            if (! empty($tags)) {
+                $relatedPosts = Blog::where('id', '!=', $data->id)
+                    ->where('status', 'active')
+                    ->where(function ($query) use ($tags) {
+                        foreach ($tags as $tag) {
+                            $query->orWhereJsonContains('tags', $tag);
+                        }
+                    })
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            } else {
+                $relatedPosts = collect(); // empty collection
+            }
+
+            // If no related posts, fetch recent posts
+            if ($relatedPosts->isEmpty()) {
+                $relatedPosts = Blog::where('id', '!=', $data->id)
+                    ->select('id', 'title', 'slug', 'thumbnail', 'description', 'created_at')
+                    ->where('status', 'active')
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            }
+
+            return Helper::jsonResponse(true, 'Data fetched successfully', 200, [
+                'blog' => $data,
+                'related_posts' => $relatedPosts,
+            ]);
+        } catch (Exception $e) {
+            Log::error('ResourcesPageController::getSingleBlog '.$e->getMessage());
+
             return Helper::jsonErrorResponse('Something went wrong', 500);
         }
     }

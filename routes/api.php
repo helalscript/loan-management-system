@@ -96,6 +96,7 @@ Route::group(['prefix' => 'cms/resource-page'], function () {
     Route::get('/fees-policies-section', [ResourcesPageController::class, 'getFeesPoliciesSection']);
     Route::get('/security-privacy-section', [ResourcesPageController::class, 'getSecurityPrivacySection']);
     Route::get('/blogs-section', [ResourcesPageController::class, 'getBlogsSection']);
+    Route::get('/blogs/{slug}', [ResourcesPageController::class, 'getSingleBlog']);
 });
 
 //route for state lincensing page
