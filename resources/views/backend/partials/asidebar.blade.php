@@ -53,6 +53,27 @@ $systemSetting = App\Models\SystemSetting::first();
 
             <!-- Contact Support Message Menu Item -->
             <li class="menu-item open">
+                <a href="{{ route('loan_packages.index') }}"
+                    class="menu-link {{ request()->routeIs('loan_packages.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">content_paste</span>
+                    <span class="title">Loan Packages</span>
+                </a>
+            </li>
+            <li class="menu-item open">
+                <a href="{{ route('repayment_types.index') }}"
+                    class="menu-link {{ request()->routeIs('repayment_types.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">event_repeat</span>
+                    <span class="title">Repayment Types</span>
+                </a>
+            </li>
+            <li class="menu-item open">
+                <a href="{{ route('package_cycles.index') }}"
+                    class="menu-link {{ request()->routeIs('package_cycles.*') ? 'active' : '' }}">
+                    <span class="material-symbols-outlined menu-icon">schedule</span>
+                    <span class="title">Package Cycles</span>
+                </a>
+            </li>
+            <li class="menu-item open">
                 <a href="{{ route('admin_contact_us.index') }}"
                     class="menu-link {{ request()->routeIs('admin_contact_us.*') ? 'active' : '' }}">
                     <span class="material-symbols-outlined menu-icon">content_paste</span>
@@ -126,7 +147,7 @@ $systemSetting = App\Models\SystemSetting::first();
             <li class="menu-item {{ request()->routeIs('dynamic_page.*') ? 'open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle active">
                     <span class="material-symbols-outlined menu-icon">clarify</span>
-                    <span class="title">Daynamic page</span>
+                    <span class="title">Dynamic page</span>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">

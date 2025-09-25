@@ -10,6 +10,9 @@
 
 
 use App\Http\Controllers\Web\Backend\BlogController;
+use App\Http\Controllers\Web\Backend\LoanPackageController;
+use App\Http\Controllers\Web\Backend\RepaymentTypeController;
+use App\Http\Controllers\Web\Backend\PackageRepaymentCycleController;
 use App\Http\Controllers\Web\Backend\CMS\FaqController;
 use App\Http\Controllers\Web\Backend\CMS\HomePageSocialLinkContainerController;
 use App\Http\Controllers\Web\Backend\ContactMessageController;
@@ -67,6 +70,19 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
   Route::resource('/blogs', BlogController::class)->names('blogs');
   Route::post('/blogs/status/{id}', [BlogController::class, 'status'])->name('blogs.status');
   Route::post('/blogs/update-container', [BlogController::class, 'updateContainer'])->name('blogs.update_container');
+
+  // Loan Packages
+  Route::resource('/loan-packages', LoanPackageController::class)->names('loan_packages');
+  Route::post('/loan-packages/status/{id}', [LoanPackageController::class, 'status'])->name('loan_packages.status');
+
+  // Repayment Types
+  Route::resource('/repayment-types', RepaymentTypeController::class)->names('repayment_types');
+  Route::post('/repayment-types/status/{id}', [RepaymentTypeController::class, 'status'])->name('repayment_types.status');
+
+  // Package Repayment Cycles
+  Route::resource('/package-cycles', PackageRepaymentCycleController::class)->names('package_cycles');
+  Route::post('/package-cycles/status/{id}', [PackageRepaymentCycleController::class, 'status'])->name('package_cycles.status');
+  Route::get('/package-cycles/edit-by-package', [PackageRepaymentCycleController::class, 'editByPackage'])->name('package_cycles.edit_by_package');
 
   // Routes for NotificationController
   Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notification.read');
