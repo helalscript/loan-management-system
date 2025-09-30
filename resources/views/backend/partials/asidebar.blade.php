@@ -51,7 +51,22 @@ $systemSetting = App\Models\SystemSetting::first();
                 </ul>
             </li> --}}
 
-            <!-- Contact Support Message Menu Item -->
+          <!--Loans Menu Item -->
+            <li class="menu-item {{ request()->routeIs('loans.*') ? 'open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">receipt_long</span>
+                    <span class="title">Loans</span>
+                </a>
+                <ul class="menu-sub">
+                    <!-- Loans List -->
+                    <li class="menu-item ">
+                        <a href="{{ route('loans.index') }}"
+                            class="menu-link {{ request()->routeIs('loans.index') ? 'active' : '' }} ">
+                            Loan List
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="menu-item open">
                 <a href="{{ route('loan_packages.index') }}"
                     class="menu-link {{ request()->routeIs('loan_packages.*') ? 'active' : '' }}">
