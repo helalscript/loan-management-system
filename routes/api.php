@@ -14,6 +14,9 @@ use App\Http\Controllers\API\V1\CMS\HomePageController;
 use App\Http\Controllers\API\V1\CMS\ResourcesPageController;
 use App\Http\Controllers\API\V1\CMS\StateLicensingPageController;
 use App\Http\Controllers\API\V1\DashboardController;
+use App\Http\Controllers\API\V1\User\LoanController;
+use App\Http\Controllers\API\V1\User\LoanPackageController;
+use App\Http\Controllers\API\V1\User\PackageController;
 use App\Http\Controllers\API\V1\User\UserContactSupportController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,9 +48,13 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
 
 // only for user
 Route::group(['middleware' => ['auth:api', 'check_is_user']], function ($router) {
-
     //route for dashboard data
-    Route::get('/dashboard-data', [DashboardController::class, 'dashboardData']);
+    // Route::get('/dashboard-data', [DashboardController::class, 'dashboardData']);
+    //route for package data
+    Route::apiResource('/loan-packages', LoanPackageController::class)->only(['index', 'show']);
+    Route::get('/loan-packages-repayment-types/{id}', [LoanPackageController::class, 'getRepaymentTypes']);
+    //route for loan data
+    Route::apiResource('/loans', LoanController::class);
 });
 
 
