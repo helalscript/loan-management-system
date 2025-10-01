@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('total_amount', 12, 2);
             $table->string('frequency')->nullable();
             $table->integer('frequency_in_days')->nullable();
+            $table->integer('repayment_cycle_count')->nullable();
 
             $table->date('start_date')->nullable();
             $table->date('loan_issue_date')->nullable();
@@ -37,7 +38,7 @@ return new class extends Migration
             $table->json(('income_sources'))->nullable();
             $table->string('repayment_method')->nullable();
 
-            $table->enum('status', ['pending', 'approved', 'rejected', 'completed', 'disbursed'])->default('pending');
+            $table->enum('status', ['pending','review','overdue','repayment', 'approved', 'rejected', 'completed', 'disbursed'])->default('pending');
             $table->timestamps();
         });
     }

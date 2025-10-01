@@ -68,6 +68,7 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
 
     // Loan
     Route::resource('/loans', LoanController::class)->names('loans');
+    Route::post('/loans/update-status/{id}', [ LoanController::class, 'updateStatus'])->name('loans.update_status');
 
     // Loan Packages
     Route::resource('/loan-packages', LoanPackageController::class)->names('loan_packages');

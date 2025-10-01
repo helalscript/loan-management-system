@@ -68,9 +68,10 @@ class LoanService
                 'repayment_type_id' => $validatedData['repayment_type_id'],
                 'frequency' => $repaymentType?->name,
                 'frequency_in_days' => $repaymentType?->duration_in_days,
+                'repayment_cycle_count' => 2, //in future this will be dynamic
 
-                'pay_schedule' => $validatedData['pay_schedule'] ?? null,
-                'income_source' => $validatedData['income_source'] ?? null,
+                'pay_schedule' => $validatedData['pay_schedule']?? null,
+                'income_sources' => json_encode($validatedData['income_source'] ?? null),
                 'repayment_method' => $validatedData['repayment_method'] ?? null,
                 'agreed_terms' => $validatedData['agreed_terms'] ?? null,
 
@@ -92,6 +93,7 @@ class LoanService
                     'information_type' => 'main',
                 ]);
             }
+
             // applicant_informations secondary
             if (isset($validatedData['secondary_first_name'])) {
                 $applicantInformationSecondary = ApplicantInformation::create([
