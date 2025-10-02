@@ -86,7 +86,15 @@ class LoanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $loan = $this->loanService->show($id);
+
+            return Helper::jsonResponse(true, 'Data fetched successfully', 200, $loan);
+        } catch (Exception $e) {
+            Log::error('LoanController::show'.$e->getMessage());
+
+            return Helper::jsonErrorResponse('Something went wrong', 500);
+        }
     }
 
     /**
@@ -104,6 +112,4 @@ class LoanController extends Controller
     {
         //
     }
-
-    
 }
