@@ -31,8 +31,13 @@ class LoanService
     {
         try {
             $per_page = $request->per_page ?? 25;
-            $loans = Loan::where('user_id', $this->user->id)
+            $loans = Loan::where('user_id', $this->user->id)->latest()
                 ->paginate($per_page);
+            $loans->getCollection()->transform(function ($loan) {
+                $loan->income_sources = json_decode($loan->income_sources);
+
+                return $loan;
+            });
 
             return $loans;
 
@@ -68,9 +73,10 @@ class LoanService
                 'repayment_type_id' => $validatedData['repayment_type_id'],
                 'frequency' => $repaymentType?->name,
                 'frequency_in_days' => $repaymentType?->duration_in_days,
+                'repayment_cycle_count' => 2, // in future this will be dynamic
 
                 'pay_schedule' => $validatedData['pay_schedule'] ?? null,
-                'income_source' => $validatedData['income_source'] ?? null,
+                'income_sources' => json_encode($validatedData['income_source'] ?? null),
                 'repayment_method' => $validatedData['repayment_method'] ?? null,
                 'agreed_terms' => $validatedData['agreed_terms'] ?? null,
 
@@ -92,6 +98,7 @@ class LoanService
                     'information_type' => 'main',
                 ]);
             }
+
             // applicant_informations secondary
             if (isset($validatedData['secondary_first_name'])) {
                 $applicantInformationSecondary = ApplicantInformation::create([
@@ -123,7 +130,7 @@ class LoanService
             }
             DB::commit();
 
-            return $loan->load('applicantInformations', 'loanDocuments','loanPackage');
+            return $loan->load('applicantInformations', 'loanDocuments', 'loanPackage');
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('LoanService::store'.$e->getMessage());
@@ -139,7 +146,10 @@ class LoanService
     public function show(int $id)
     {
         try {
+            $loan = Loan::with('applicantInformations', 'loanDocuments', 'loanPackage', 'loanRepaymentSchedules:id,loan_id,installment_no,amount,due_date,paid_amount,penalty_amount,paid_at,status')->find($id);
+            $loan->income_sources = json_decode($loan->income_sources);
 
+            return $loan;
         } catch (Exception $e) {
             Log::error('LoanService::show'.$e->getMessage());
             throw $e;

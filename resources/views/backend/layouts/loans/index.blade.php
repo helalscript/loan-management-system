@@ -1,5 +1,5 @@
 @extends('backend.app')
-@section('title', 'Loan Packages')
+@section('title', 'Loan List')
 
 @push('styles')
     <style>
@@ -13,8 +13,8 @@
 @section('content')
     <div class="main-content-container overflow-hidden">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-            <h3 class="mb-0">Loan Packages</h3>
-            <a href="{{ route('loans.create') }}" class="btn btn-outline-primary py-1 px-2 px-sm-4 fs-14 fw-medium rounded-3">Add Package</a>
+            <h3 class="mb-0">Loan List</h3>
+            {{-- <a href="{{ route('loans.create') }}" class="btn btn-outline-primary py-1 px-2 px-sm-4 fs-14 fw-medium rounded-3">Add Package</a> --}}
         </div>
 
         <div class="card bg-white border-0 rounded-3 mb-4">

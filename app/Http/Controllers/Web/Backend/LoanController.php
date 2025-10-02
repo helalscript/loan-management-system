@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Web\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
-use App\Models\PackageRepaymentCycle;
-use App\Models\RepaymentType;
+use App\Models\LoanRepaymentSchedule;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
@@ -21,22 +21,25 @@ class LoanController extends Controller
                 ->addIndexColumn()
                 ->addColumn('status', function ($data) {
                     $color = match ($data->status) {
-                        'pending' => 'badge bg-warning text-dark',
-                        'approved' => 'badge bg-primary',
-                        'rejected' => 'badge bg-danger',
-                        'completed' => 'badge bg-success',
-                        'disbursed' => 'badge bg-info text-dark',
-                        default => 'badge bg-secondary',
+                        'pending' => 'badge bg-warning text-dark',   // Yellow (waiting)
+                        'review' => 'badge bg-secondary',           // Gray (under review)
+                        'approved' => 'badge bg-primary',             // Blue (approved)
+                        'disbursed' => 'badge bg-info text-dark',      // Light blue (money given)
+                        'repayment' => 'badge bg-light text-dark',   // Custom: Purple for active repayment
+                        'overdue' => 'badge bg-danger',              // Red (missed deadline)
+                        'completed' => 'badge bg-success',             // Green (loan paid off)
+                        'rejected' => 'badge bg-dark',                // Black/dark red
+                        default => 'badge bg-light text-dark',     // Light gray fallback
                     };
 
                     return '<span class="'.$color.'">'.ucfirst($data->status).'</span>';
                 })
                 ->addColumn('action', function ($data) {
                     return '<div class="action-wrapper">
-                     <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View" onclick="window.location.href=\'' . route('loans.show', $data->id) . '\'">
+                     <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View" onclick="window.location.href=\''.route('loans.show', $data->id).'\'">
                         <i class="material-symbols-outlined fs-16 text-primary">visibility</i>
                         </button>
-                        <a type="button" href="'.route('loans.edit', $data->id).'" class="ps-0 border-0 bg-transparent lh-1 position-relative top-2"><i class="material-symbols-outlined fs-16 text-body">edit</i></a>
+                        
                         <button class="ps-0 border-0 bg-transparent lh-1 position-relative top-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" onclick="deleteRecord(event,'.$data->id.')"><i class="material-symbols-outlined fs-16 text-danger">delete</i></button>
                     </div>';
                 })
@@ -47,92 +50,14 @@ class LoanController extends Controller
         return view('backend.layouts.loans.index');
     }
 
-    public function create()
-    {
-        $repaymentTypes = RepaymentType::where('status', 'active')->get();
-
-        return view('backend.layouts.loans.create', compact('repaymentTypes'));
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'origination_fee' => 'required|numeric|min:0',
-            'service_fee' => 'required|numeric|min:0',
-            'descriptions' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
-
-            // Optional associations
-            'repayment_type_ids' => 'nullable|array',
-            'repayment_type_ids.*' => 'exists:repayment_types,id',
-            'cycles' => 'nullable|array',
-            'cycles.*.repayment_type_id' => 'required_with:cycles|exists:repayment_types,id',
-            'cycles.*.installment_no' => 'required_with:cycles|integer|min:1',
-            'cycles.*.installment_amount' => 'required_with:cycles|numeric|min:0',
-            'cycles.*.status' => 'nullable|in:active,inactive',
-        ]);
-        try {
-            $package = Loan::create($validated);
-
-            if (! empty($validated['cycles'])) {
-                foreach ($validated['cycles'] as $cycle) {
-                    PackageRepaymentCycle::create([
-                        'loans_id' => $package->id,
-                        'repayment_type_id' => $cycle['repayment_type_id'],
-                        'installment_no' => $cycle['installment_no'],
-                        'installment_amount' => $cycle['installment_amount'],
-                        'status' => $cycle['status'] ?? 'active',
-                    ]);
-                }
-            }
-
-            return redirect()->route('loans.index')->with('success', 'Loan package created successfully');
-        } catch (\Throwable $e) {
-            Log::error('LoanController@store: '.$e->getMessage());
-
-            return back()->with('error', 'Failed to create loan package')->withInput();
-        }
-    }
-
-    public function edit(string $id)
-    {
-        $data = Loan::findOrFail($id);
-        $repaymentTypes = RepaymentType::where('status', 'active')->get();
-        $cycles = PackageRepaymentCycle::where('loans_id', $id)->get();
-
-        return view('backend.layouts.loans.edit', compact('data', 'repaymentTypes', 'cycles'));
-    }
+    // <a type="button" href="'.route('loans.edit', $data->id).'" class="ps-0 border-0 bg-transparent lh-1 position-relative top-2"><i class="material-symbols-outlined fs-16 text-body">edit</i></a>
 
     public function show(string $id)
     {
-        $data = Loan::with(['user','loanPackage','repaymentType','applicantInformations','loanDocuments','loanRepaymentSchedules'])->findOrFail($id);
+        $data = Loan::with(['user', 'loanPackage', 'repaymentType', 'applicantInformations', 'loanDocuments', 'loanRepaymentSchedules'])->findOrFail($id);
+
         // dd($data->toArray());
         return view('backend.layouts.loans.show', compact('data'));
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'origination_fee' => 'required|numeric|min:0',
-            'service_fee' => 'required|numeric|min:0',
-            'descriptions' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        try {
-            $data = Loan::findOrFail($id);
-            $data->update($validated);
-
-            return redirect()->route('loans.index')->with('success', 'Loan package updated successfully');
-        } catch (\Throwable $e) {
-            Log::error('LoanController@update: '.$e->getMessage());
-
-            return back()->with('error', 'Failed to update loan package')->withInput();
-        }
     }
 
     public function destroy(string $id)
@@ -141,20 +66,72 @@ class LoanController extends Controller
         if (! $data) {
             return response()->json(['success' => false, 'message' => 'Item not found.'], 404);
         }
+        if ($data->status != 'pending') {
+            return response()->json(['warning' => true, 'message' => 'Item can not be deleted as it is not in pending status.']);
+        }
         $data->delete();
 
         return response()->json(['success' => true, 'message' => 'Item deleted successfully.']);
     }
 
-    public function status(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
-        $data = Loan::find($id);
-        if (! $data) {
-            return response()->json(['success' => false, 'message' => 'Item not found.'], 404);
-        }
-        $data->status = $data->status === 'active' ? 'inactive' : 'active';
-        $data->save();
+        $validatedData = $request->validate([
+            'status' => 'required|in:approved,rejected,review,completed,disbursed,overdue,repayment',
+            'review_note' => 'required_if:status,review|max:255',
+        ]);
 
-        return response()->json(['success' => true, 'message' => 'Item status changed successfully.']);
+        try {
+            $loan = Loan::findOrFail($id);
+
+            // 🚫 Restrict status changes after disbursed/repayment
+            if (in_array($loan->status, ['disbursed', 'repayment', 'overdue', 'completed'])) {
+                // Allowed only these forward transitions
+                $allowedStatuses = ['repayment', 'overdue', 'completed'];
+                if (! in_array($validatedData['status'], $allowedStatuses)) {
+                    return redirect()->back()->with('error', 'You cannot change the status of a disbursed loan back to '.$validatedData['status']);
+                }
+            }
+
+            // Normal status update
+            $loan->status = $validatedData['status'];
+
+            // Handle review
+            if ($validatedData['status'] == 'review') {
+                $loan->review_note = $validatedData['review_note'] ?? null;
+            }
+
+            // Handle disbursed → generate schedule
+            if ($validatedData['status'] === 'disbursed') {
+                // Prevent duplicate disbursement
+                if ($loan->loanRepaymentSchedules()->count() > 0) {
+                    return redirect()->back()->with('error', 'Repayment schedule already created for this loan.');
+                }
+
+                $loan->loan_issue_date = now();
+                $loan->start_date = now();
+                // $loan->end_date = now()->addDays($loan->frequency_in_days * $loan->repayment_cycle_count);
+                $loan->status = 'repayment';
+                $loan->save();
+
+                for ($i = 1; $i <= $loan->repayment_cycle_count; $i++) {
+                    LoanRepaymentSchedule::create([
+                        'loan_id' => $loan->id,
+                        'installment_no' => $i,
+                        'amount' => round($loan->total_amount / $loan->repayment_cycle_count, 2),
+                        'due_date' => now()->addDays($loan->frequency_in_days * $i),
+                        'status' => 'pending',
+                    ]);
+                }
+            }
+
+            $loan->save();
+
+            return redirect()->back()->with('success', 'Loan Status updated successfully.');
+        } catch (Exception $e) {
+            Log::error('LoanController::updateStatus '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Loan Failed to update status.');
+        }
     }
 }
