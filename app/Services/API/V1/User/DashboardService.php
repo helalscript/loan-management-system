@@ -140,9 +140,52 @@ class DashboardService
         try {
             $per_page = $request->per_page ?? 25;
             $loans = Loan::where('user_id', $this->user->id)
-            ->select('id', 'loan_purpose', 'total_amount', 'created_at', 'status', 'loan_issue_date', 'payment_close_date')
-            ->paginate($per_page);
+                ->select('id', 'loan_purpose', 'total_amount', 'created_at', 'status', 'loan_issue_date', 'payment_close_date')
+                ->paginate($per_page);
+
             return $loans;
+        } catch (Exception $e) {
+            Log::error('DashboardService::HistoryPageData - '.$e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function LoanManagementToolPageData($request)
+    {
+        try {
+            // all loan query IDs
+            $userLoans = Loan::where('user_id', $this->user->id)->get(['id', 'loan_purpose', 'total_amount', 'created_at', 'status', 'loan_issue_date', 'payment_close_date']);
+            $loanIds = $userLoans->pluck('id')->toArray();
+            // get upcoming installment
+            $upcoming_installment = LoanRepaymentSchedule::with('loan:id,loan_purpose')
+                ->whereIn('loan_id', $loanIds)
+                ->whereIn('status', ['pending', 'rescheduled'])
+                ->orderBy('due_date', 'asc')
+                ->select('id', 'amount', 'installment_no', 'due_date', 'loan_id')
+                ->first();
+
+            $upcomingRepaymentDates = LoanRepaymentSchedule::with('loan:id,loan_purpose')
+                ->whereIn('loan_id', $loanIds)
+                ->whereIn('status', ['pending', 'rescheduled'])
+                ->orderBy('due_date', 'asc')
+                ->select('id', 'amount', 'due_date', 'loan_id')
+                ->get();
+
+            $totalLoanBalance = $userLoans
+                ->whereIn('status', ['repayment', 'disbursed', 'overdue', 'completed'])
+                ->sum('total_amount');
+            $loans_list = $userLoans->whereIn('status', ['repayment', 'disbursed', 'overdue', 'completed']);
+            
+            $data = [
+                'upcoming_installment' => $upcoming_installment ?? null,
+                'due_dates' => $upcomingRepaymentDates ?? [],
+                'my_total_loans' => [
+                    'total_loans' => $totalLoanBalance,
+                    'loans_list' => $loans_list,
+                ],
+            ];
+
+            return $data;
         } catch (Exception $e) {
             Log::error('DashboardService::HistoryPageData - '.$e->getMessage());
             throw $e;

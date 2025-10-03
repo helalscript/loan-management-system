@@ -62,6 +62,7 @@ class LoanService
             }
             DB::beginTransaction();
             $loan = Loan::create([
+                'loan_purpose' => $validatedData['loan_purpose'] ?? null,
                 'user_id' => $this->user->id,
                 'loan_package_id' => $validatedData['package_id'],
 

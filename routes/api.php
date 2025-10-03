@@ -16,6 +16,7 @@ use App\Http\Controllers\API\V1\CMS\StateLicensingPageController;
 use App\Http\Controllers\API\V1\DashboardController;
 use App\Http\Controllers\API\V1\User\LoanController;
 use App\Http\Controllers\API\V1\User\LoanPackageController;
+use App\Http\Controllers\API\V1\User\NotificationController;
 use App\Http\Controllers\API\V1\User\PackageController;
 use App\Http\Controllers\API\V1\User\UserContactSupportController;
 use Illuminate\Support\Facades\Route;
@@ -51,11 +52,18 @@ Route::group(['middleware' => ['auth:api', 'check_is_user']], function ($router)
     //route for dashboard data
     Route::get('/dashboard-data/home', [DashboardController::class, 'dashboardData']);
     Route::get('/dashboard-data/history', [DashboardController::class, 'HistoryPageData']);
+    Route::get('/dashboard-data/loan-management-tool', [DashboardController::class, 'LoanManagementToolPageData']);
     //route for package data
     Route::apiResource('/loan-packages', LoanPackageController::class)->only(['index', 'show']);
     Route::get('/loan-packages-repayment-types/{id}', [LoanPackageController::class, 'getRepaymentTypes']);
     //route for loan data
     Route::apiResource('/loans', LoanController::class);
+
+    //Notifications route
+    Route::get('/my-notifications', [NotificationController::class, 'index']);
+    Route::post('/my-notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
+    Route::delete('/my-notifications-delete/{id}', [NotificationController::class, 'delete']);
+    Route::delete('/my-notifications-delete-all', [NotificationController::class, 'deleteAll']);
 });
 
 

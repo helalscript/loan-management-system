@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\LoanRepaymentSchedule;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RepaymentController extends Controller
 {
@@ -64,11 +66,26 @@ class RepaymentController extends Controller
         //
     }
 
-    public function status($id)
+   public function updateStatus($id)
     {
-        $repayment = LoanRepaymentSchedule::findOrFail($id);
-        $repayment->status = $repayment->status == 'active' ? 'inactive' : 'active';
-        $repayment->save();
-        return redirect()->back();
+        // dd($id);
+        // $validatedData = $request->validate([
+        //     'status' => 'required|in:pending,paid,overdue,rescheduled', //'pending', 'paid', 'partial', 'overdue', 'rescheduled'
+        // ]);
+
+        try {
+            $loanRepaymentSchedule = LoanRepaymentSchedule::findOrFail($id);
+            if ($loanRepaymentSchedule->status === 'paid') {
+                return redirect()->back()->with('info', 'This installment is already marked as paid.');
+            }
+            $loanRepaymentSchedule->status = 'paid';
+            $loanRepaymentSchedule->save();
+
+            return redirect()->back()->with('success', 'Loan Repayment Schedule Status updated successfully.');
+        } catch (Exception $e) {
+            Log::error('RepaymentController::updateStatus '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Loan Repayment Schedule Failed to update status.');
+        }
     }
 }

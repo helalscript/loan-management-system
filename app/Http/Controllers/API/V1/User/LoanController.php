@@ -41,6 +41,7 @@ class LoanController extends Controller
     {
         // dd($request->all()); //this is for debugging
         $validatedData = $request->validate([
+            'loan_purpose' => 'required|string|max:255',
             'package_id' => 'required|exists:loan_packages,id',
             'repayment_type_id' => 'required|exists:repayment_types,id',
 

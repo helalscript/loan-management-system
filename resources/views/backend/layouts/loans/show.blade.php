@@ -138,10 +138,10 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>{{ $doc['title'] ?? 'Document' }}</span>
                                 <div>
-                                    <span
+                                    {{-- <span
                                         class="badge bg-{{ $doc['status'] == 'pending' ? 'warning' : ($doc['status'] == 'approved' ? 'success' : 'danger') }}">
                                         {{ ucfirst($doc['status']) }}
-                                    </span>
+                                    </span> --}}
                                     <a href="{{ asset($doc['file_path']) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary ms-2">
                                         <i class="bi bi-eye"></i> View
@@ -169,6 +169,7 @@
                                     <th>Re-Payment Date</th>
                                     <th>Amount</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,6 +183,13 @@
                                                 class="badge bg-{{ $schedule['status'] == 'paid' ? 'success' : ($schedule['status'] == 'pending' ? 'warning' : 'danger') }}">
                                                 {{ ucfirst($schedule['status']) }}
                                             </span>
+                                        </td>
+                                        <td>
+                                            @if ($schedule['status'] == 'paid')
+                                                <span class="text-success">Already Paid</span>
+                                            @else  
+                                            <a href="{{ route('loan_repayments.update_status', ['id' => $schedule['id']]) }}" class="btn btn-sm btn-outline-primary ms-2">Mark As Paid</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
