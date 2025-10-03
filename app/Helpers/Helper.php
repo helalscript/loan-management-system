@@ -2,36 +2,34 @@
 
 namespace App\Helpers;
 
-use App\Models\SystemSetting;
 use App\Models\User;
+use App\Notifications\LoanNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Messaging\CloudMessage;
+use Illuminate\Support\Str;
 use Kreait\Firebase\Messaging\Notification;
 
 class Helper
 {
-
-    //! File or Image Upload
+    // ! File or Image Upload
     public static function fileUpload($file, string $folder, string $name): ?string
     {
-        if (!$file->isValid()) {
+        if (! $file->isValid()) {
             return null;
         }
 
-        $imageName = Str::slug($name) . '.' . $file->extension();
-        $path = public_path('uploads/' . $folder);
-        if (!file_exists($path)) {
+        $imageName = Str::slug($name).'.'.$file->extension();
+        $path = public_path('uploads/'.$folder);
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
         $file->move($path, $imageName);
-        return 'uploads/' . $folder . '/' . $imageName;
+
+        return 'uploads/'.$folder.'/'.$imageName;
     }
 
-    //! File or Image Delete
+    // ! File or Image Delete
     public static function fileDelete(string $path): void
     {
         if (file_exists($path)) {
@@ -39,19 +37,20 @@ class Helper
         }
     }
 
-    //! Generate Slug
-    //! Generate Slug
+    // ! Generate Slug
+    // ! Generate Slug
     public static function makeSlug(string $title, $table): string
     {
         $slug = Str::slug($title);
         while (DB::table($table)->where('slug', $slug)->exists()) {
             $randomString = Str::random(5);
-            $slug = Str::slug($title) . '-' . $randomString;
+            $slug = Str::slug($title).'-'.$randomString;
         }
+
         return $slug;
     }
 
-    //! JSON Response
+    // ! JSON Response
     public static function jsonResponse(bool $status, string $message, int $code, $data = null, bool $paginate = false, $paginateData = null): JsonResponse
     {
         $response = [
@@ -59,7 +58,7 @@ class Helper
             'message' => $message,
             'code' => $code,
         ];
-        if ($paginate && !empty($paginateData)) {
+        if ($paginate && ! empty($paginateData)) {
             $response['data'] = $data;
             $response['pagination'] = [
                 'current_page' => $paginateData->currentPage(),
@@ -74,7 +73,7 @@ class Helper
                 'to' => $paginateData->lastItem(),
                 'path' => $paginateData->path(),
             ];
-        } elseif ($paginate && !empty($data)) {
+        } elseif ($paginate && ! empty($data)) {
             $response['data'] = $data->items();
             $response['pagination'] = [
                 'current_page' => $data->currentPage(),
@@ -104,7 +103,21 @@ class Helper
             'code' => $code,
             'errors' => $errors,
         ];
+
         return response()->json($response, $code);
     }
 
+    public static function sendLoanNotification($user, $title = null, $url = null, $message = null, $type = null, $thumbnail = null)
+    {
+        $notificationData = [
+            'title' => $title,
+            'message' => $message,
+            'url' => $url,
+            'type' => $type,
+            'thumbnail' => $type == 'paid_repayment' ? asset('backend/admin/assets/images/paid_repayment.png') : '',
+            // uploded_loan, loan_given, paid_repayment
+        ];
+        $user->notify(new LoanNotification($notificationData));
+        // Log::info('Notification sent to user: '.$user->name);
+    }
 }

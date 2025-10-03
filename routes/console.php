@@ -1,8 +1,6 @@
 <?php
 
-use App\Console\Commands\AutoCompleteBookings;
-use App\Console\Commands\UpdateContractorRanking;
-use App\Console\Commands\WeeklyTaskStatusUpdate;
+use App\Console\Commands\LoanRepaymentStatusUpdate;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -13,4 +11,4 @@ use Illuminate\Support\Facades\Artisan;
 //     logger()->info('test it');
 // })->everySecond();
 
-Schedule::command(WeeklyTaskStatusUpdate::class)->everyFourHours();
+Schedule::command(LoanRepaymentStatusUpdate::class)->everyFourHours();
