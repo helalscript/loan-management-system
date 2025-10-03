@@ -28,7 +28,7 @@ class LoanRepaymentSchedule extends Model
         'loan_id' => 'integer',
         'installment_no' => 'integer',
         'amount' => 'decimal:2',
-        'due_date' => 'date',
+        'due_date' => 'date:Y-M-d',
         'paid_amount' => 'decimal:2',
         'penalty_amount' => 'decimal:2',
         'interest_rate' => 'decimal:2',

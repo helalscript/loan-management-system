@@ -62,6 +62,7 @@ class LoanService
             }
             DB::beginTransaction();
             $loan = Loan::create([
+                'loan_purpose' => $validatedData['loan_purpose'] ?? null,
                 'user_id' => $this->user->id,
                 'loan_package_id' => $validatedData['package_id'],
 
@@ -147,6 +148,11 @@ class LoanService
     {
         try {
             $loan = Loan::with('applicantInformations', 'loanDocuments', 'loanPackage', 'loanRepaymentSchedules:id,loan_id,installment_no,amount,due_date,paid_amount,penalty_amount,paid_at,status')->find($id);
+            if (! $loan) {
+                return Helper::jsonErrorResponse('Loan not found', 404);
+            } elseif ($loan->user_id != $this->user->id) {
+                return Helper::jsonErrorResponse('Loan not found', 404);
+            }
             $loan->income_sources = json_decode($loan->income_sources);
 
             return $loan;

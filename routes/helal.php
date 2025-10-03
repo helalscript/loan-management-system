@@ -18,6 +18,7 @@ use App\Http\Controllers\Web\Backend\LoanPackageController;
 use App\Http\Controllers\Web\Backend\NotificationController;
 use App\Http\Controllers\Web\Backend\PackageRepaymentCycleController;
 use App\Http\Controllers\Web\Backend\ProfileController;
+use App\Http\Controllers\Web\Backend\RepaymentController;
 use App\Http\Controllers\Web\Backend\RepaymentTypeController;
 use App\Http\Controllers\Web\Backend\SystemSettingController;
 use App\Http\Controllers\Web\Backend\UserController;
@@ -69,6 +70,7 @@ Route::middleware(['auth:web', 'role_check'])->prefix('admin')->group(function (
     // Loan
     Route::resource('/loans', LoanController::class)->names('loans');
     Route::post('/loans/update-status/{id}', [ LoanController::class, 'updateStatus'])->name('loans.update_status');
+    Route::get('/loan-repayments/update-status/{id}', [ RepaymentController::class, 'updateStatus'])->name('loan_repayments.update_status');
 
     // Loan Packages
     Route::resource('/loan-packages', LoanPackageController::class)->names('loan_packages');

@@ -134,4 +134,6 @@ class LoanController extends Controller
             return redirect()->back()->with('error', 'Loan Failed to update status.');
         }
     }
+
+    
 }
