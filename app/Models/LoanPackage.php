@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class LoanPackage extends Model
 {
@@ -31,4 +31,11 @@ class LoanPackage extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected $hidden = ['created_at', 'updated_at'];
+
+    public function packageRepaymentCycles()
+    {
+        return $this->hasMany(PackageRepaymentCycle::class);
+    }
 }

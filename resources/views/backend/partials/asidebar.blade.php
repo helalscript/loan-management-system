@@ -51,28 +51,55 @@ $systemSetting = App\Models\SystemSetting::first();
                 </ul>
             </li> --}}
 
-            <!-- Contact Support Message Menu Item -->
-            <li class="menu-item open">
-                <a href="{{ route('loan_packages.index') }}"
-                    class="menu-link {{ request()->routeIs('loan_packages.*') ? 'active' : '' }}">
-                    <span class="material-symbols-outlined menu-icon">content_paste</span>
-                    <span class="title">Loan Packages</span>
+            <!--Loans Menu Item -->
+            <li class="menu-item {{ request()->routeIs('loans.*') ? 'open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">receipt_long</span>
+                    <span class="title">Loans</span>
                 </a>
+                <ul class="menu-sub">
+                    <!-- Loans List -->
+                    <li class="menu-item ">
+                        <a href="{{ route('loans.index') }}"
+                            class="menu-link {{ request()->routeIs('loans.index') ? 'active' : '' }} ">
+                            Loan List
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li class="menu-item open">
-                <a href="{{ route('repayment_types.index') }}"
-                    class="menu-link {{ request()->routeIs('repayment_types.*') ? 'active' : '' }}">
-                    <span class="material-symbols-outlined menu-icon">event_repeat</span>
-                    <span class="title">Repayment Types</span>
+
+            <!-- Loans Packages Menu Item -->
+            <li
+                class="menu-item {{ request()->routeIs('loan_packages.*', 'repayment_types.*', 'package_cycles.*') ? 'open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">card_giftcard</span>
+                    <span class="title">Packages</span>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item open">
+                        <a href="{{ route('loan_packages.index') }}"
+                            class="menu-link {{ request()->routeIs('loan_packages.*') ? 'active' : '' }}">
+                            <span class="material-symbols-outlined menu-icon">content_paste</span>
+                            <span class="title">Loan Packages</span>
+                        </a>
+                    </li>
+                    <li class="menu-item open">
+                        <a href="{{ route('repayment_types.index') }}"
+                            class="menu-link {{ request()->routeIs('repayment_types.*') ? 'active' : '' }}">
+                            <span class="material-symbols-outlined menu-icon">event_repeat</span>
+                            <span class="title">Repayment Types</span>
+                        </a>
+                    </li>
+                    <li class="menu-item open">
+                        <a href="{{ route('package_cycles.index') }}"
+                            class="menu-link {{ request()->routeIs('package_cycles.*') ? 'active' : '' }}">
+                            <span class="material-symbols-outlined menu-icon">schedule</span>
+                            <span class="title">Package Cycles</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li class="menu-item open">
-                <a href="{{ route('package_cycles.index') }}"
-                    class="menu-link {{ request()->routeIs('package_cycles.*') ? 'active' : '' }}">
-                    <span class="material-symbols-outlined menu-icon">schedule</span>
-                    <span class="title">Package Cycles</span>
-                </a>
-            </li>
+
             <li class="menu-item open">
                 <a href="{{ route('admin_contact_us.index') }}"
                     class="menu-link {{ request()->routeIs('admin_contact_us.*') ? 'active' : '' }}">

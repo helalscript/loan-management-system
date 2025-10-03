@@ -2,69 +2,101 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\LoanPackage;
-use App\Models\RepaymentType;
 use App\Models\PackageRepaymentCycle;
+use App\Models\RepaymentType;
+use Illuminate\Database\Seeder;
 
 class LoanPackageSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ensure a 15-day repayment type exists
-        $repay15 = RepaymentType::firstOrCreate(
-            ['name' => '15 days'],
-            ['duration_in_days' => 15, 'status' => 'active']
+        // Ensure repayment types exist
+        $repayBiWeekly = RepaymentType::firstOrCreate(
+            ['name' => 'Bi-Weekly'],
+            ['duration_in_days' => 14, 'status' => 'active']
         );
 
-        // $50 package: origination $10, service $12 (per screenshot copy)
+        $repayWeekly = RepaymentType::firstOrCreate(
+            ['name' => 'Weekly'],
+            ['duration_in_days' => 7, 'status' => 'active']
+        );
+
+        /*
+         |--------------------------------------------------------------------------
+         | Loan $50 Package
+         |--------------------------------------------------------------------------
+         */
         $pkg50 = LoanPackage::updateOrCreate(
-            ['name' => '$50'],
+            ['name' => 'Loan $50'],
             [
                 'amount' => 50,
                 'origination_fee' => 10,
                 'service_fee' => 12,
-                'descriptions' => 'No interest. Fees don\'t change after approval.',
+                'descriptions' => 'All loans have a $10 origination fee.
+                No interest EVER.
+                Fees don’t change after approval.
+                For the $50 loan choice, there is a $12 service fee for all loans.
+                For the $100 loan choice, there is a $35 service fee for all loans.
+                Fees don\'t change after approval.',
                 'status' => 'active',
             ]
         );
 
-        PackageRepaymentCycle::updateOrCreate(
-            [
-                'loan_package_id' => $pkg50->id,
-                'repayment_type_id' => $repay15->id,
-                'installment_no' => 1,
-            ],
-            [
-                'installment_amount' => 50,
-                'status' => 'active',
-            ]
-        );
+        // Total repay = 72 (=> 36 + 36)
+        foreach ([$repayWeekly, $repayBiWeekly] as $repayType) {
+            for ($i = 1; $i <= 2; $i++) {
+                PackageRepaymentCycle::updateOrCreate(
+                    [
+                        'loan_package_id' => $pkg50->id,
+                        'repayment_type_id' => $repayType->id,
+                        'installment_no' => $i,
+                    ],
+                    [
+                        'installment_amount' => 36,
+                        'status' => 'active',
+                    ]
+                );
+            }
+        }
 
-        // $100 package: origination $10, service $35 (per screenshot copy)
+        /*
+         |--------------------------------------------------------------------------
+         | Loan $100 Package
+         |--------------------------------------------------------------------------
+         */
         $pkg100 = LoanPackage::updateOrCreate(
-            ['name' => '$100'],
+            ['name' => 'Loan $100'],
             [
                 'amount' => 100,
                 'origination_fee' => 10,
                 'service_fee' => 35,
-                'descriptions' => 'No interest. Fees don\'t change after approval.',
+                'descriptions' => 'All loans have a $10 origination fee.
+                No interest EVER.
+                Fees don’t change after approval.
+                For the $50 loan choice, there is a $12 service fee for all loans.
+                For the $100 loan choice, there is a $35 service fee for all loans.
+                Fees don\'t change after approval.',
                 'status' => 'active',
             ]
         );
 
-        PackageRepaymentCycle::updateOrCreate(
-            [
-                'loan_package_id' => $pkg100->id,
-                'repayment_type_id' => $repay15->id,
-                'installment_no' => 1,
-            ],
-            [
-                'installment_amount' => 100,
-                'status' => 'active',
-            ]
-        );
+        // Total repay = 145 (=> 72.5 + 72.5)
+        foreach ([$repayWeekly, $repayBiWeekly] as $repayType) {
+            for ($i = 1; $i <= 2; $i++) {
+                PackageRepaymentCycle::updateOrCreate(
+                    [
+                        'loan_package_id' => $pkg100->id,
+                        'repayment_type_id' => $repayType->id,
+                        'installment_no' => $i,
+                    ],
+                    [
+                        'installment_amount' => 72.50,
+                        'status' => 'active',
+                    ]
+                );
+            }
+        }
     }
 }
-
 

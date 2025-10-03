@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('type', ['Employed', 'Business', 'Other']);
             $table->string('sub_type')->nullable(); // e.g., Salary, Freelance
             $table->string('job_title')->nullable();
+            $table->string('company')->nullable();
             $table->unsignedTinyInteger('start_month')->nullable(); // 1-12
             $table->unsignedSmallInteger('start_year')->nullable();
             $table->decimal('annual_income', 12, 2)->nullable();
