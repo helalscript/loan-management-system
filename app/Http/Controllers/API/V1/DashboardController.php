@@ -46,4 +46,17 @@ class DashboardController extends Controller
             return Helper::jsonResponse(false, 'Failed to retrieve dashboard data: '.$e->getMessage(), 500);
         }
     }
+
+    public function LoanManagementToolPageData(Request $request)
+    {
+        try {
+            $dashboardData = $this->dashboardService->LoanManagementToolPageData($request);
+
+            return Helper::jsonResponse(true, 'Data retrieved successfully.', 200, $dashboardData);
+        } catch (Exception $e) {
+            Log::error('Error retrieving dashboard data: '.$e->getMessage());
+
+            return Helper::jsonResponse(false, 'Failed to retrieve dashboard data: '.$e->getMessage(), 500);
+        }
+    }
 }
