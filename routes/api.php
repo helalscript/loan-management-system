@@ -49,7 +49,8 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
 // only for user
 Route::group(['middleware' => ['auth:api', 'check_is_user']], function ($router) {
     //route for dashboard data
-    // Route::get('/dashboard-data', [DashboardController::class, 'dashboardData']);
+    Route::get('/dashboard-data/home', [DashboardController::class, 'dashboardData']);
+    Route::get('/dashboard-data/history', [DashboardController::class, 'HistoryPageData']);
     //route for package data
     Route::apiResource('/loan-packages', LoanPackageController::class)->only(['index', 'show']);
     Route::get('/loan-packages-repayment-types/{id}', [LoanPackageController::class, 'getRepaymentTypes']);

@@ -4,21 +4,22 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
 class ContactMessageNotification extends Notification
 {
     use Queueable;
 
     private $requestData;
-   
+
     /**
      * Create a new notification instance.
      */
     public function __construct($requestData)
     {
+        Log::info('Broadcasting notification __construct');
         $this->requestData = $requestData;
     }
 
@@ -29,11 +30,14 @@ class ContactMessageNotification extends Notification
     {
         return ['database', 'broadcast'];
     }
+
     /**
      * Get the database representation of the notification.
      */
     public function toDatabase($notifiable)
     {
+        Log::info('Broadcasting notification toDatabase');
+
         return [
             'message' => $this->requestData['message'],
             'url' => $this->requestData['url'],
@@ -47,12 +51,20 @@ class ContactMessageNotification extends Notification
      */
     public function toBroadcast($notifiable)
     {
-        return new BroadcastMessage([
-            'title' => $this->requestData['title'],
-            'message' => $this->requestData['message'],
-            'url' => $this->requestData['url'],
-            'type' => $this->requestData['type'],
-            'thumbnail' => $this->requestData['thumbnail'],
-        ]);
+        try {
+            Log::info('Broadcasting notification toBroadcast');
+
+            return new BroadcastMessage([
+                'title' => $this->requestData['title'],
+                'message' => $this->requestData['message'],
+                'url' => $this->requestData['url'],
+                'type' => $this->requestData['type'],
+                'thumbnail' => $this->requestData['thumbnail'],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('ContactMessageNotification::toBroadcast'.$e->getMessage());
+
+            return true;
+        }
     }
 }
