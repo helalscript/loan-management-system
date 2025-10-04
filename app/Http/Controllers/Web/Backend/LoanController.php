@@ -82,7 +82,7 @@ class LoanController extends Controller
         ]);
 
         try {
-            $loan = Loan::findOrFail($id);
+            $loan = Loan::with(['loanRepaymentSchedules'])->findOrFail($id);
 
             // 🚫 Restrict status changes after disbursed/repayment
             if (in_array($loan->status, ['disbursed', 'repayment', 'overdue', 'completed'])) {
@@ -125,6 +125,16 @@ class LoanController extends Controller
                 }
             }
 
+            // Handle completed → set close date
+            if ($validatedData['status'] === 'completed') {
+                // first check if all repayments are completed
+                $pendingRepayments = $loan->loanRepaymentSchedules()->whereIn('status', ['pending', 'rescheduled'])->count();
+                if ($pendingRepayments > 0) {
+                    return redirect()->back()->with('error', 'Cannot mark loan as completed. There are still pending repayments.');
+                }
+                $loan->payment_close_date = now();
+            }
+
             $loan->save();
 
             return redirect()->back()->with('success', 'Loan Status updated successfully.');
@@ -134,6 +144,4 @@ class LoanController extends Controller
             return redirect()->back()->with('error', 'Loan Failed to update status.');
         }
     }
-
-    
 }
