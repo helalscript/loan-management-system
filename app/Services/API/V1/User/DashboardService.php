@@ -83,11 +83,11 @@ class DashboardService
                 ->whereIn('loan_id', $loanIds)
                 ->whereIn('status', ['pending', 'rescheduled'])
                 ->orderBy('due_date', 'asc')
-                ->select('id', 'amount', 'due_date', 'loan_id')
+                ->select('id', 'amount', 'due_date', 'loan_id','status')
                 ->get();
 
             // ===================== Past Loans History =====================
-            $pastLoans = $userLoans->where('status', 'completed');
+            $pastLoans = $userLoans->where('status', 'completed')->values();
 
             // ===================== Final Data Response =====================
             $data = [
@@ -174,8 +174,8 @@ class DashboardService
             $totalLoanBalance = $userLoans
                 ->whereIn('status', ['repayment', 'disbursed', 'overdue', 'completed'])
                 ->sum('total_amount');
-            $loans_list = $userLoans->whereIn('status', ['repayment', 'disbursed', 'overdue', 'completed']);
-            
+            $loans_list = $userLoans->whereIn('status', ['repayment', 'disbursed', 'overdue', 'completed'])->values();
+
             $data = [
                 'upcoming_installment' => $upcoming_installment ?? null,
                 'due_dates' => $upcomingRepaymentDates ?? [],
