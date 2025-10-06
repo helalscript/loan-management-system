@@ -32,7 +32,7 @@ class ApplicantInformation extends Model
         'last_name' => 'string',
         'email' => 'string',
         'phone' => 'string',
-        'birth_date' => 'date',
+        'birth_date' => 'date:Y-m-d',
         'street_address' => 'string',
         'city' => 'string',
         'state' => 'string',

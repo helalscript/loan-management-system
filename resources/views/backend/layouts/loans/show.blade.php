@@ -81,6 +81,7 @@
                                 <p><strong>Name:</strong> {{ $applicant['first_name'] }} {{ $applicant['last_name'] }}</p>
                                 <p><strong>Email:</strong> {{ $applicant['email'] }}</p>
                                 <p><strong>Phone:</strong> {{ $applicant['phone'] }}</p>
+                                <p><strong>Birth Day:</strong> {{ $applicant['birth_date']?\Carbon\Carbon::parse($applicant['birth_date'])->format('Y-m-d'):'N/A' }}</p>
                                 <p><strong>Address:</strong> {{ $applicant['street_address'] }}, {{ $applicant['city'] }},
                                     {{ $applicant['state'] }} {{ $applicant['zip'] }}</p>
                             </div>
@@ -90,17 +91,17 @@
             </div>
         </div>
         @php
-        $incomeSources = $data->income_sources;
+            $incomeSources = $data->income_sources;
 
-        // First decode
-        $decoded = json_decode($incomeSources, true);
+            // First decode
+            $decoded = json_decode($incomeSources, true);
 
-        // If still string, decode again
-        if (is_string($decoded)) {
-        $decoded = json_decode($decoded, true);
-        }
+            // If still string, decode again
+            if (is_string($decoded)) {
+                $decoded = json_decode($decoded, true);
+            }
 
-        $incomeSources = $decoded ?? [];
+            $incomeSources = $decoded ?? [];
         @endphp
 
         <div class="card bg-white border-0 shadow-sm rounded-3 mb-4">
@@ -187,8 +188,9 @@
                                         <td>
                                             @if ($schedule['status'] == 'paid')
                                                 <span class="text-success">Already Paid</span>
-                                            @else  
-                                            <a href="{{ route('loan_repayments.update_status', ['id' => $schedule['id']]) }}" class="btn btn-sm btn-outline-primary ms-2">Mark As Paid</a>
+                                            @else
+                                                <a href="{{ route('loan_repayments.update_status', ['id' => $schedule['id']]) }}"
+                                                    class="btn btn-sm btn-outline-primary ms-2">Mark As Paid</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -202,75 +204,75 @@
             </div>
         </div>
         {{--  this section for some button to accept or reject and or make a Review by admin or team --}}
-{{-- Action Buttons for Admin/Team --}}
-<div class="card bg-white border-0 shadow-sm rounded-3 mb-4">
-    <div class="card-body p-4">
-        <h5 class="mb-3"><i class="bi bi-check2-circle me-2"></i> Admin Actions</h5>
+        {{-- Action Buttons for Admin/Team --}}
+        <div class="card bg-white border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-body p-4">
+                <h5 class="mb-3"><i class="bi bi-check2-circle me-2"></i> Admin Actions</h5>
 
-        <div class="d-flex gap-2">
+                <div class="d-flex gap-2">
 
-            {{-- Review (with note) --}}
-@if(in_array($data->status, ['pending', 'approved']))
-    <form action="{{ route('loans.update_status', $data->id) }}" method="POST" class="d-flex gap-2">
-        @csrf
-        <input type="hidden" name="status" value="review">
-        <input type="text" name="review_note" placeholder="Enter review note" class="form-control"
-               style="max-width: 250px;">
-        <button type="submit" class="btn btn-warning">
-            <i class="bi bi-chat-left-text"></i> Review
-        </button>
-    </form>
-@endif
+                    {{-- Review (with note) --}}
+                    @if (in_array($data->status, ['pending', 'approved']))
+                        <form action="{{ route('loans.update_status', $data->id) }}" method="POST" class="d-flex gap-2">
+                            @csrf
+                            <input type="hidden" name="status" value="review">
+                            <input type="text" name="review_note" placeholder="Enter review note" class="form-control"
+                                style="max-width: 250px;">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-chat-left-text"></i> Review
+                            </button>
+                        </form>
+                    @endif
 
-{{-- Approve --}}
-@if(in_array($data->status, ['pending', 'review']))
-    <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
-        @csrf
-        <input type="hidden" name="status" value="approved">
-        <button type="submit" class="btn btn-success">
-            <i class="bi bi-check-circle"></i> Approve
-        </button>
-    </form>
-@endif
+                    {{-- Approve --}}
+                    @if (in_array($data->status, ['pending', 'review']))
+                        <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="status" value="approved">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Approve
+                            </button>
+                        </form>
+                    @endif
 
-{{-- Reject --}}
-@if(in_array($data->status, ['pending', 'review', 'approved']))
-    <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
-        @csrf
-        <input type="hidden" name="status" value="rejected">
-        <button type="submit" class="btn btn-danger">
-            <i class="bi bi-x-circle"></i> Reject
-        </button>
-    </form>
-@endif
+                    {{-- Reject --}}
+                    @if (in_array($data->status, ['pending', 'review', 'approved']))
+                        <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="status" value="rejected">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-x-circle"></i> Reject
+                            </button>
+                        </form>
+                    @endif
 
-{{-- Disbursed --}}
-@if($data->status === 'approved')
-    <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
-        @csrf
-        <input type="hidden" name="status" value="disbursed">
-        <button type="submit" class="btn btn-secondary">
-            <i class="bi bi-lock"></i> Disburse
-        </button>
-    </form>
-@endif
+                    {{-- Disbursed --}}
+                    @if ($data->status === 'approved')
+                        <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="status" value="disbursed">
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="bi bi-lock"></i> Disburse
+                            </button>
+                        </form>
+                    @endif
 
-{{-- Completed --}}
-@if(in_array($data->status, ['repayment', 'overdue']))
-    <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
-        @csrf
-        <input type="hidden" name="status" value="completed">
-        <button type="submit" class="btn btn-primary">
-            <i class="bi bi-check-circle"></i> Completed
-        </button>
-    </form>
-@endif
+                    {{-- Completed --}}
+                    @if (in_array($data->status, ['repayment', 'overdue']))
+                        <form action="{{ route('loans.update_status', $data->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="status" value="completed">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Completed
+                            </button>
+                        </form>
+                    @endif
 
-           
-            
+
+
+                </div>
+            </div>
         </div>
-    </div>
-</div>
         <div class="mt-3">
             <a href="{{ route('loans.index') }}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
