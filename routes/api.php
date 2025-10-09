@@ -51,8 +51,8 @@ Route::group(['middleware' => ['auth:api', 'check_is_user']], function ($router)
     Route::get('/loan-packages-repayment-types/{id}', [LoanPackageController::class, 'getRepaymentTypes']);
 
     // route for loan data
-    // Route::apiResource('/loans', LoanController::class);
-    Route::get('/loans', [LoanController::class, 'index']);
+    Route::apiResource('/loans', LoanController::class);
+    // Route::get('/loans', [LoanController::class, 'index']);
 
     // Notifications route
     Route::get('/my-notifications', [NotificationController::class, 'index']);
